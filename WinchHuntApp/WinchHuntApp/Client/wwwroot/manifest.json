@@ -1,6 +1,6 @@
 {
-  "name": "WinchHuntApp",
-  "short_name": "WinchHuntApp",
+  "name": "Winch Hunt",
+  "short_name": "Winch Hunt",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
