@@ -3,21 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinchHuntApp.Server", "WinchHuntApp\Server\WinchHuntApp.Server.csproj", "{31B8FBA7-DD97-41EB-85B8-6ED95CF8FD89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinchHuntApp.Server", "WinchHuntApp\Server\WinchHuntApp.Server.csproj", "{31B8FBA7-DD97-41EB-85B8-6ED95CF8FD89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinchHuntApp.Client", "WinchHuntApp\Client\WinchHuntApp.Client.csproj", "{3F43427B-587C-47DF-A7A2-43B0E4F719B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinchHuntApp.Client", "WinchHuntApp\Client\WinchHuntApp.Client.csproj", "{3F43427B-587C-47DF-A7A2-43B0E4F719B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinchHuntApp.Shared", "WinchHuntApp\Shared\WinchHuntApp.Shared.csproj", "{3A0B10AC-36E3-45C9-BA09-4DD7B2790B1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinchHuntApp.Shared", "WinchHuntApp\Shared\WinchHuntApp.Shared.csproj", "{3A0B10AC-36E3-45C9-BA09-4DD7B2790B1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinchHuntApp.Server.Tests", "WinchHuntApp.Server.Tests\WinchHuntApp.Server.Tests.csproj", "{F088C452-047B-4F33-AA19-615844BC7DAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinchHuntApp.Server.Tests", "WinchHuntApp.Server.Tests\WinchHuntApp.Server.Tests.csproj", "{F088C452-047B-4F33-AA19-615844BC7DAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinchHuntApp.Client.Tests", "WinchHuntApp.Client.Tests\WinchHuntApp.Client.Tests.csproj", "{A66C0A57-8619-4E3C-9EA2-956C252AD850}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinchHuntApp.Client.Tests", "WinchHuntApp.Client.Tests\WinchHuntApp.Client.Tests.csproj", "{A66C0A57-8619-4E3C-9EA2-956C252AD850}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinchHuntApp.Shared.Tests", "WinchHuntApp.Shared.Tests\WinchHuntApp.Shared.Tests.csproj", "{E41CC2AF-4D8E-4593-8B72-636B44000CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinchHuntApp.Shared.Tests", "WinchHuntApp.Shared.Tests\WinchHuntApp.Shared.Tests.csproj", "{E41CC2AF-4D8E-4593-8B72-636B44000CC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{DCE35AF1-5AB8-4019-B01D-12AC97775D32}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A6E5BAAA-E348-460E-9B8D-B73044537BB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{9A4AF47C-1CF3-4F4D-B275-1D49AECEFA43}"
+	ProjectSection(SolutionItems) = preProject
+		AddMigration.ps1 = AddMigration.ps1
+		UpdateDatabase.ps1 = UpdateDatabase.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
