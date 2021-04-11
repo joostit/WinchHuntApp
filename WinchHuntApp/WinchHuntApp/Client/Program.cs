@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Majorsoft.Blazor.Components.Maps;
+using Majorsoft.Blazor.Components.Common.JsInterop;
+using WinchHuntApp.Client.Services;
 
 namespace WinchHuntApp.Client
 {
@@ -16,17 +19,33 @@ namespace WinchHuntApp.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddHttpClient("WinchHuntApp.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
+            builder.Services.AddHttpClient("WinchHuntApp.PublicServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+            builder.Services.AddHttpClient<PublicHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WinchHuntApp.ServerAPI"));
 
-            builder.Services.AddApiAuthorization();
+            builder.Services.AddSingleton<IMapService, MapService>();
 
-            await builder.Build().RunAsync();
+            builder.Services.AddApiAuthorization();
+            builder.Services.AddMapExtensions();
+            builder.Services.AddJsInteropExtensions();
+
+
+            var host = builder.Build();
+
+            var mapService = host.Services.GetRequiredService<IMapService>();
+            await mapService.Initialize();
+
+            await host.RunAsync();
         }
+
     }
 }

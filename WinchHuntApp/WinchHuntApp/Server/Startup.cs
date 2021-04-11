@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using WinchHuntApp.Server.Data;
 using WinchHuntApp.Server.Models;
+using Majorsoft.Blazor.Components.Maps;
 
 namespace WinchHuntApp.Server
 {
@@ -40,6 +41,8 @@ namespace WinchHuntApp.Server
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddMapExtensions();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
