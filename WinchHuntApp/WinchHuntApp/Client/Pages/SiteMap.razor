@@ -18,82 +18,96 @@
 
 @page "/sitemap"
 
-    <GoogleMap @ref="googleMap"
-               ApiKey="@mapService.ApiKey"
-               OnMapInitialized="@(() => {})"
+    <div ref="mapDiv" style="
+        top: 5%;
+        bottom: 5%;
+        left: 5%;
+        right: 5%;
+        background-color: yellow" >
+        <GoogleMap 
+                   
+                   @ref="googleMap"
+                   ApiKey="@mapService.ApiKey"
+                   OnMapInitialized="@(() => {})"
+                   BackgroundColor="@_jsMapBackgroundColor"
+                   Height="@mapHeight"
+                   Center="@_jsMapCenter"
+                   Zoom="@_jsMapZoomLevel"
+                   ZoomControl="@_jsZoomControl"
+                   MapType="@_jsMapType"
+                   RotateControl="@_jsRotateControl"
+                   ScaleControl="@_jsScaleControl"
+                   StreetViewControl="@_jsStreetViewControl"
+                   ClickableIcons="@_jsClickableIcons"
+                   DisableDefaultUI="@_jsDisableDefaultUI"
+                   DraggableCursor="crosshair"
+                   DraggingCursor="move"
+                   FullscreenControl="@_jsFullscreenControl"
+                   MapTypeControl="@_jsMapTypeControl"
+                   CenterCurrentLocationOnLoad="@_jsMapCenterCurrentLocation"
+                   CustomControls="@_jsCustomControls"
+                   Markers="@_jsMarkers">
+        </GoogleMap>
+    </div>
 
-	        BackgroundColor="@_jsMapBackgroundColor"
-	        Center="@_jsMapCenter"
-	        Zoom="@_jsMapZoomLevel"
-	        ZoomControl="@_jsZoomControl"
-	        MapType="@_jsMapType"
-	        RotateControl="@_jsRotateControl"
-	        ScaleControl="@_jsScaleControl"
-	        StreetViewControl="@_jsStreetViewControl"
-	        ClickableIcons="@_jsClickableIcons"
-	        DisableDefaultUI="@_jsDisableDefaultUI"
-	        DraggableCursor="crosshair"
-	        DraggingCursor="move"
-	        FullscreenControl="@_jsFullscreenControl"
-	        MapTypeControl="@_jsMapTypeControl"
-	        CenterCurrentLocationOnLoad="@_jsMapCenterCurrentLocation"
-	        CustomControls="@_jsCustomControls"
-	        Markers="@_jsMarkers">
+    @code {
 
-    </GoogleMap>
+        private ElementReference mapDiv;
 
+        private int mapWidth = 200;
+        private int mapHeight = 200;
 
-@code {
+        private GeolocationData _jsMapCenter = new GeolocationData("Times Square New York");
+        private string _jsMapBackgroundColor = "lightblue";
+        private byte _jsMapZoomLevel = 10;
+        private bool _jsMapCenterCurrentLocation = true; //Overrides Center. Async operation which micht fail with Location services
+        private GoogleMapTypes _jsMapType = GoogleMapTypes.Satellite;
+        private bool _jsClickableIcons = true;
+        private bool _jsDisableDefaultUI = false;
+        private bool _jsFullscreenControl = false;
+        private bool _jsMapTypeControl = false;
 
-    private GeolocationData _jsMapCenter = new GeolocationData("Times Square New York");
-    private string _jsMapBackgroundColor = "lightblue";
-    private byte _jsMapZoomLevel = 10;
-    private bool _jsMapCenterCurrentLocation = true; //Overrides Center. Async operation which micht fail with Location services
-    private GoogleMapTypes _jsMapType = GoogleMapTypes.Satellite;
-    private bool _jsClickableIcons = true;
-    private bool _jsDisableDefaultUI = false;
-    private bool _jsFullscreenControl = false;
-    private bool _jsMapTypeControl = false;
+        private bool _jsRotateControl = false;
+        private bool _jsScaleControl = false;
+        private bool _jsStreetViewControl = false;
+        private bool _jsZoomControl = false;
 
-    private bool _jsRotateControl = false;
-    private bool _jsScaleControl = false;
-    private bool _jsStreetViewControl = false;
-    private bool _jsZoomControl = false;
-
-    private List<GoogleMapCustomControl> _jsCustomControls = new List<GoogleMapCustomControl>();
-    private ObservableRangeCollection<GoogleMapMarker> _jsMarkers = new ObservableRangeCollection<GoogleMapMarker>();
-    private ObservableRangeCollection<GoogleMapMarker> _jsMarkersTmp = new ObservableRangeCollection<GoogleMapMarker>();
-
-
-
-
-    private GoogleMap googleMap;
-
-    protected override async Task OnInitializedAsync()
-    {
-
-
-
-        GeolocationService service = new GeolocationService(jsRuntime);
-        await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
-
-
-        //var window = await jsRuntime.Window();
-        //    var navigator = await window.Navigator();
-        //    geolocationWrapper = navigator.Geolocation;
-    }
+        private List<GoogleMapCustomControl> _jsCustomControls = new List<GoogleMapCustomControl>();
+        private ObservableRangeCollection<GoogleMapMarker> _jsMarkers = new ObservableRangeCollection<GoogleMapMarker>();
+        private ObservableRangeCollection<GoogleMapMarker> _jsMarkersTmp = new ObservableRangeCollection<GoogleMapMarker>();
 
 
-    private async Task GeoLocationUpdated(GeolocationResult location)
-    {
-        if (location.IsSuccess)
+        private GoogleMap googleMap;
+
+
+        protected override async Task OnInitializedAsync()
         {
-            Console.WriteLine("GeoLocation result is true");
-            Console.WriteLine($"Result: {location.ToString()}");
+            //await jsRuntime.InvokeAsync<object>("AddResizeHandler", "splitter1");
+            //await jsRuntime.InvokeAsync<object>("CallResizeHandler", "splitter1");
 
-            GoogleMapMarker marker = new GoogleMapMarker(new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude));
-            //_googleMap.Markers.Add(marker);
+
+            GeolocationService service = new GeolocationService(jsRuntime);
+            await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
+
+            await googleMap.CenterCurrentLocationOnMapAsync();
+            Console.WriteLine($"GoogleMap: {googleMap}");
+
+            //var window = await jsRuntime.Window();
+            //    var navigator = await window.Navigator();
+            //    geolocationWrapper = navigator.Geolocation;
         }
-    }
 
-}
+
+        private async Task GeoLocationUpdated(GeolocationResult location)
+        {
+            if (location.IsSuccess)
+            {
+                Console.WriteLine("GeoLocation result is true");
+                Console.WriteLine($"Result: {location.ToString()}");
+
+                GoogleMapMarker marker = new GoogleMapMarker(new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude));
+                //_googleMap.Markers.Add(marker);
+            }
+        }
+
+    }
