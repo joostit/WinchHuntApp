@@ -44,6 +44,15 @@ namespace WinchHuntApp.Server
 
             services.AddMapExtensions();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    //builder.WithOrigins("https://googleapis.com", "https://localhost:44367");
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -71,6 +80,8 @@ namespace WinchHuntApp.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseIdentityServer();
             app.UseAuthentication();

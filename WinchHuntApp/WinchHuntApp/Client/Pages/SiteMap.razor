@@ -1,5 +1,5 @@
 ﻿
-@inject IJSRuntime jsRuntime
+@inject IJSRuntime JSRuntime
 @inject IMapService mapService
 
 @using Majorsoft.Blazor.Components.Maps
@@ -17,84 +17,73 @@
 @*@using BrowserInterop.Geolocation*@
 
 @page "/sitemap"
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYq9E0QENTISJ_dRolduQy9ywss-dmayM&callback=initMap&libraries=&v=weekly"></script>*@
+
+
+    <h1>Display Google Map</h1>
+    <div id="map" style="height:500px;width:100%;">
+    </div>
+
 
     <div ref="mapDiv" style="
         top: 5%;
         bottom: 5%;
         left: 5%;
         right: 5%;
-        background-color: yellow" >
-        <GoogleMap 
-                   
-                   @ref="googleMap"
-                   ApiKey="@mapService.ApiKey"
-                   OnMapInitialized="@(() => {})"
-                   BackgroundColor="@_jsMapBackgroundColor"
-                   Height="@mapHeight"
-                   Center="@_jsMapCenter"
-                   Zoom="@_jsMapZoomLevel"
-                   ZoomControl="@_jsZoomControl"
-                   MapType="@_jsMapType"
-                   RotateControl="@_jsRotateControl"
-                   ScaleControl="@_jsScaleControl"
-                   StreetViewControl="@_jsStreetViewControl"
-                   ClickableIcons="@_jsClickableIcons"
-                   DisableDefaultUI="@_jsDisableDefaultUI"
-                   DraggableCursor="crosshair"
-                   DraggingCursor="move"
-                   FullscreenControl="@_jsFullscreenControl"
-                   MapTypeControl="@_jsMapTypeControl"
-                   CenterCurrentLocationOnLoad="@_jsMapCenterCurrentLocation"
-                   CustomControls="@_jsCustomControls"
-                   Markers="@_jsMarkers">
-        </GoogleMap>
+        background-color: yellow">
+
+        Enter your name: <input @bind="name" />
+        <button @onclick="Submit">Submit</button>
+
+
     </div>
 
     @code {
 
-        private ElementReference mapDiv;
+        string mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAYq9E0QENTISJ_dRolduQy9ywss-dmayM&callback=initMap&libraries=&v=weekly";
 
-        private int mapWidth = 200;
-        private int mapHeight = 200;
+        private string name;
 
-        private GeolocationData _jsMapCenter = new GeolocationData("Times Square New York");
-        private string _jsMapBackgroundColor = "lightblue";
-        private byte _jsMapZoomLevel = 10;
-        private bool _jsMapCenterCurrentLocation = true; //Overrides Center. Async operation which micht fail with Location services
-        private GoogleMapTypes _jsMapType = GoogleMapTypes.Satellite;
-        private bool _jsClickableIcons = true;
-        private bool _jsDisableDefaultUI = false;
-        private bool _jsFullscreenControl = false;
-        private bool _jsMapTypeControl = false;
+        // Load the module and keep a reference to it
+        // You need to use .AsTask() to convert the ValueTask to Task as it may be awaited multiple times
+        private Task<IJSObjectReference> _module;
+        private Task<IJSObjectReference> MapsModule => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", mapsScriptUrl).AsTask();
 
-        private bool _jsRotateControl = false;
-        private bool _jsScaleControl = false;
-        private bool _jsStreetViewControl = false;
-        private bool _jsZoomControl = false;
+        async Task Submit()
+        {
+            var module = await MapsModule;
+            await module.InvokeVoidAsync("sayHi", name);
+        }
 
-        private List<GoogleMapCustomControl> _jsCustomControls = new List<GoogleMapCustomControl>();
-        private ObservableRangeCollection<GoogleMapMarker> _jsMarkers = new ObservableRangeCollection<GoogleMapMarker>();
-        private ObservableRangeCollection<GoogleMapMarker> _jsMarkersTmp = new ObservableRangeCollection<GoogleMapMarker>();
+        public async ValueTask DisposeAsync()
+        {
+            if (_module != null)
+            {
+                var module = await _module;
+                await module.DisposeAsync();
+            }
+        }
 
 
-        private GoogleMap googleMap;
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            //base.OnAfterRenderAsync(firstRender);
+
+            if (firstRender)
+            {
+                var module = await MapsModule;
+                await JSRuntime.InvokeVoidAsync("initialize", null);
+            }
+        }
+
 
 
         protected override async Task OnInitializedAsync()
         {
-            //await jsRuntime.InvokeAsync<object>("AddResizeHandler", "splitter1");
-            //await jsRuntime.InvokeAsync<object>("CallResizeHandler", "splitter1");
 
-
-            GeolocationService service = new GeolocationService(jsRuntime);
+            GeolocationService service = new GeolocationService(JSRuntime);
             await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
 
-            await googleMap.CenterCurrentLocationOnMapAsync();
-            Console.WriteLine($"GoogleMap: {googleMap}");
-
-            //var window = await jsRuntime.Window();
-            //    var navigator = await window.Navigator();
-            //    geolocationWrapper = navigator.Geolocation;
         }
 
 
@@ -105,8 +94,6 @@
                 Console.WriteLine("GeoLocation result is true");
                 Console.WriteLine($"Result: {location.ToString()}");
 
-                GoogleMapMarker marker = new GoogleMapMarker(new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude));
-                //_googleMap.Markers.Add(marker);
             }
         }
 
