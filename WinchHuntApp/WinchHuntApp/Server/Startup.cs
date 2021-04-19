@@ -48,8 +48,11 @@ namespace WinchHuntApp.Server
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    //builder.WithOrigins("https://googleapis.com", "https://localhost:44367");
-                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("https://googleapis.com", 
+                        "https://google.com",
+                        "https://localhost:44367", 
+                        "https://winchhunt.net",
+                        "https://winchhunt.azurewebsites.net").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
             });
 
