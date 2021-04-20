@@ -87,7 +87,7 @@
             //await jsRuntime.InvokeAsync<object>("AddResizeHandler", "splitter1");
             //await jsRuntime.InvokeAsync<object>("CallResizeHandler", "splitter1");
 
-
+            
             GeolocationService service = new GeolocationService(jsRuntime);
             await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
 
@@ -128,18 +128,24 @@
 
         private GoogleMapMarker CreateLocationMarker(GeolocationCoordinate position)
         {
+            
             GoogleMapMarker retVal = new GoogleMapMarker(position);
 
-            retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.svg")
+            retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.png")
             {
                 Anchor = new Point()
                 {
-                    X = 10,
-                    Y = 10
+                    X = 20,
+                    Y = 20
                 },
                 Size = new Rect()
                 {
-                    Width = 20,
+                    Width = 40,
+                    Height = 40
+                },
+                ScaledSize = new Rect()
+                {
+                    Width  = 20,
                     Height = 20
                 }
             };
