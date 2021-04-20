@@ -46,7 +46,8 @@
                    MapTypeControl="@_jsMapTypeControl"
                    CenterCurrentLocationOnLoad="@_jsMapCenterCurrentLocation"
                    CustomControls="@_jsCustomControls"
-                   Markers="@_jsMarkers">
+                   Markers="@_jsMarkers"
+                   OnMapZoomLevelChanged="@OnMapZoomLevelChanged">
         </GoogleMap>
     </div>
 
@@ -78,7 +79,7 @@
 
 
         private GoogleMap googleMap;
-
+        private GoogleMapMarker currentLocationMarker = null;
 
         protected override async Task OnInitializedAsync()
         {
@@ -88,6 +89,7 @@
 
             GeolocationService service = new GeolocationService(jsRuntime);
             await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
+
 
             await googleMap.CenterCurrentLocationOnMapAsync();
             Console.WriteLine($"GoogleMap: {googleMap}");
@@ -100,14 +102,64 @@
 
         private async Task GeoLocationUpdated(GeolocationResult location)
         {
+
+
+
             if (location.IsSuccess)
             {
+
+                GeolocationCoordinate position = new GeolocationCoordinate(52.270236, 6.876096); //new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude);
+
+                if (currentLocationMarker == null)
+                {
+                    currentLocationMarker = CreateLocationMarker(position);
+                    googleMap.Markers.Add(currentLocationMarker);
+                }
+                else
+                {
+                    currentLocationMarker.Position = position;
+                }
+
                 Console.WriteLine("GeoLocation result is true");
                 Console.WriteLine($"Result: {location.ToString()}");
-
-                GoogleMapMarker marker = new GoogleMapMarker(new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude));
-                //_googleMap.Markers.Add(marker);
             }
         }
+
+        private GoogleMapMarker CreateLocationMarker(GeolocationCoordinate position)
+        {
+            GoogleMapMarker retVal = new GoogleMapMarker(position);
+
+            retVal.Icon = new GoogleMapMarkerLabelIcon("/img/circle.svg")
+            {
+                Anchor = new Point()
+                {
+                    X = 10,
+                    Y = 10
+                },
+                Size = new Rect()
+                {
+                    Width = 20,
+                    Height = 20
+                }
+            };
+
+
+            return retVal;
+        }
+
+
+
+        private async Task OnMapZoomLevelChanged()
+        {
+            await Task.Run(() =>
+            {
+                if (currentLocationMarker != null)
+                {
+                    googleMap.Markers.Remove(currentLocationMarker);
+                    googleMap.Markers.Add(currentLocationMarker);
+                }
+            });
+        }
+
 
     }
