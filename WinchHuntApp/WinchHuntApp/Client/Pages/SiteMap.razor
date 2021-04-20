@@ -31,6 +31,7 @@
                    OnMapInitialized="@(() => {})"
                    BackgroundColor="@_jsMapBackgroundColor"
                    Height="@mapHeight"
+                   Width="@mapWidth"
                    Center="@_jsMapCenter"
                    Zoom="@_jsMapZoomLevel"
                    ZoomControl="@_jsZoomControl"
@@ -129,7 +130,7 @@
         {
             GoogleMapMarker retVal = new GoogleMapMarker(position);
 
-            retVal.Icon = new GoogleMapMarkerLabelIcon("/img/circle.svg")
+            retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.svg")
             {
                 Anchor = new Point()
                 {
