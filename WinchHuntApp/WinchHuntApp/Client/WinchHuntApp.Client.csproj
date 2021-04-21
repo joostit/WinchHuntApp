@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="BrowserInterop" Version="1.1.2" />
-    <PackageReference Include="Majorsoft.Blazor.Components.Maps" Version="1.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="5.0.5" />
@@ -17,6 +16,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\WinchHuntApp.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Majorsoft.Blazor.Components.Common.JsInterop">
+      <HintPath>..\..\..\..\blazor-components\src\Majorsoft.Blazor.Components.Maps\bin\Debug\net5.0\Majorsoft.Blazor.Components.Common.JsInterop.dll</HintPath>
+    </Reference>
+    <Reference Include="Majorsoft.Blazor.Components.Core">
+      <HintPath>..\..\..\..\blazor-components\src\Majorsoft.Blazor.Components.Maps\bin\Debug\net5.0\Majorsoft.Blazor.Components.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Majorsoft.Blazor.Components.Maps">
+      <HintPath>..\..\..\..\blazor-components\src\Majorsoft.Blazor.Components.Maps\bin\Debug\net5.0\Majorsoft.Blazor.Components.Maps.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

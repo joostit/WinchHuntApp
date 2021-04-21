@@ -1,6 +1,7 @@
 ﻿
 @inject IJSRuntime jsRuntime
 @inject IMapService mapService
+@inject BrowserService browserService
 
 @using Majorsoft.Blazor.Components.Maps
 
@@ -18,20 +19,22 @@
 
 @page "/sitemap"
 
-    <div ref="mapDiv" style="
-        top: 5%;
-        bottom: 5%;
-        left: 5%;
-        right: 5%;
-        background-color: yellow" >
+    <div ref="mapDiv" 
+        id ="mapDivId"
+        style="
+            top: 5%;
+            bottom: 5%;
+            left: 5%;
+            right: 5%;
+            background-color: yellow" >
         <GoogleMap 
                    
                    @ref="googleMap"
                    ApiKey="@mapService.ApiKey"
                    OnMapInitialized="@(() => {})"
                    BackgroundColor="@_jsMapBackgroundColor"
-                   Height="@mapHeight"
-                   Width="@mapWidth"
+                   @bind-Height="@mapHeight"
+                   @bind-Width="@mapWidth"
                    Center="@_jsMapCenter"
                    Zoom="@_jsMapZoomLevel"
                    ZoomControl="@_jsZoomControl"
@@ -84,32 +87,49 @@
 
         protected override async Task OnInitializedAsync()
         {
-            //await jsRuntime.InvokeAsync<object>("AddResizeHandler", "splitter1");
-            //await jsRuntime.InvokeAsync<object>("CallResizeHandler", "splitter1");
 
-            
-            GeolocationService service = new GeolocationService(jsRuntime);
-            await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
+            BrowserService.OnResize += onResize;
 
 
             await googleMap.CenterCurrentLocationOnMapAsync();
             Console.WriteLine($"GoogleMap: {googleMap}");
 
-            //var window = await jsRuntime.Window();
-            //    var navigator = await window.Navigator();
-            //    geolocationWrapper = navigator.Geolocation;
+            
+
+        }
+
+
+        protected override async Task OnParametersSetAsync()
+        {
+            GeolocationService service = new GeolocationService(jsRuntime);
+            await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
+        }
+
+
+        private async Task onResize()
+        {
+            updateMapSize();
+        }
+
+
+        private async Task updateMapSize()
+        {
+            var dims = await browserService.GetInnerDimensions("mapDivId");
+            Console.WriteLine($"Browser size updated. W: {dims.Width}, H: {dims.Height}");
+
+            mapWidth = dims.Width;
+            mapHeight = dims.Height;
+            googleMap.Width = dims.Width;
         }
 
 
         private async Task GeoLocationUpdated(GeolocationResult location)
         {
-
-
-
+            
             if (location.IsSuccess)
             {
 
-                GeolocationCoordinate position = new GeolocationCoordinate(52.270236, 6.876096); //new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude);
+                GeolocationCoordinate position = new GeolocationCoordinate(52.270088, 6.876613); //new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude);
 
                 if (currentLocationMarker == null)
                 {
@@ -128,15 +148,15 @@
 
         private GoogleMapMarker CreateLocationMarker(GeolocationCoordinate position)
         {
-            
+
             GoogleMapMarker retVal = new GoogleMapMarker(position);
 
             retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.png")
             {
                 Anchor = new Point()
                 {
-                    X = 20,
-                    Y = 20
+                    X = 10,
+                    Y = 10
                 },
                 Size = new Rect()
                 {
@@ -158,14 +178,7 @@
 
         private async Task OnMapZoomLevelChanged()
         {
-            await Task.Run(() =>
-            {
-                if (currentLocationMarker != null)
-                {
-                    googleMap.Markers.Remove(currentLocationMarker);
-                    googleMap.Markers.Add(currentLocationMarker);
-                }
-            });
+
         }
 
 
