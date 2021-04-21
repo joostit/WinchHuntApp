@@ -1,9 +1,11 @@
 ﻿
 @inject IJSRuntime jsRuntime
 @inject IMapService mapService
-@inject BrowserService browserService
 
+@inject GeoLocationService locationService
 
+@using BrowserInterop.Extensions
+@using BrowserInterop.Geolocation
 @using WinchHuntApp.Client.Services
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
@@ -12,14 +14,15 @@
 
 <div ref="mapDiv"
      id="mapDivId"
-     style="
-            top: 5%;
-            bottom: 5%;
-            left: 5%;
-            right: 5%;
-            background-color: yellow">
+     style="        
+        height: 90vh;
+        top: 50px;
+        bottom: 50px;
+        left: 5%;
+        right: 5%;
+        background-color: yellow">
 
-   <GoogleMap @ref="@map" Id="map1" Options="@mapOptions"></GoogleMap>
+    <GoogleMap @ref="@map" Id="map1" Options="@mapOptions" Height="100%"></GoogleMap>
 
 </div>
 
@@ -27,14 +30,28 @@
 
     private ElementReference mapDiv;
     private GoogleMap map;
-
     private MapOptions mapOptions;
+
 
 
     protected override async Task OnInitializedAsync()
     {
 
+        InitMap();
+        locationService.GeoLocationStateHasChanged += LocationUpdated;
+    }
 
+
+    private void LocationUpdated(object s, EventArgs e)
+    {
+        Console.WriteLine("SiteMap: Location Updated");
+        var loc = locationService.CurrentPosition;
+        Console.WriteLine($"Lat: {loc.Location.Coords.Latitude}, {loc.Location.Coords.Longitude} - Accuracy: {loc.Location.Coords.Accuracy}" );
+    }
+
+
+    private void InitMap()
+    {
         mapOptions = new MapOptions()
         {
             Zoom = 13,
@@ -45,10 +62,6 @@
             },
             MapTypeId = MapTypeId.Roadmap
         };
-
-        BrowserService.OnResize += onResize;
-
-
     }
 
 
@@ -57,18 +70,6 @@
 
     }
 
-
-    private async Task onResize()
-    {
-        await updateMapSize();
-    }
-
-
-    private async Task updateMapSize()
-    {
-        var dims = await browserService.GetInnerDimensions("mapDivId");
-        Console.WriteLine($"Browser size updated. W: {dims.Width}, H: {dims.Height}");
-    }
 
 
     //private async Task GeoLocationUpdated(GeolocationResult location)

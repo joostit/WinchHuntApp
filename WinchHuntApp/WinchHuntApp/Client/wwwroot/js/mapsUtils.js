@@ -1,7 +1,4 @@
 ﻿window.initMapsScript = function (apiKey) {
-    console.log("Window.InitMapsScript called");
-
-
 
 	let scriptsIncluded = false;
 	let scriptTags = document.querySelectorAll('head > script');
@@ -13,11 +10,8 @@
 		}
 	});
 
-	console.log("Injecting Google Maps API script to <head>");
-
+	//console.log("Injecting Google Maps API script to <head>");
 	let src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&v=3";
-
-	console.log("Injecting src: " + src);
 
 	let importedMaps = document.createElement('script');
 	importedMaps.src = src;

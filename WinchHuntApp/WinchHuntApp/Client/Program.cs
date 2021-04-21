@@ -32,7 +32,7 @@ namespace WinchHuntApp.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WinchHuntApp.ServerAPI"));
 
             builder.Services.AddSingleton<IMapService, MapService>();
-            builder.Services.AddScoped<BrowserService>();
+            builder.Services.AddScoped<GeoLocationService>();
 
             builder.Services.AddApiAuthorization();
             
@@ -41,9 +41,9 @@ namespace WinchHuntApp.Client
             var host = builder.Build();
 
             var mapService = host.Services.GetRequiredService<IMapService>();
-            var browserService = host.Services.GetRequiredService<BrowserService>();
-
+            var geoLocationService = host.Services.GetRequiredService<GeoLocationService>();
             await mapService.Initialize();
+            await geoLocationService.Initialize();
 
             await host.RunAsync();
         }
