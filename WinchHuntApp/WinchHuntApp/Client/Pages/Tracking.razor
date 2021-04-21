@@ -10,7 +10,7 @@
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 
-@page "/sitemap"
+@page "/tracking"
 
 <div ref="mapDiv"
      id="mapDivId"
@@ -22,7 +22,7 @@
         right: 5%;
         background-color: yellow">
 
-    <GoogleMap @ref="@map" Id="map1" Options="@mapOptions" Height="100%"></GoogleMap>
+    <GoogleMap @ref="map" Id="map1" Options="@mapOptions" OnAfterInit="@OnAfterMapInit" Height="100%"></GoogleMap>
 
 </div>
 
@@ -32,11 +32,10 @@
     private GoogleMap map;
     private MapOptions mapOptions;
 
-
+    Marker currentLocationMarker;
 
     protected override async Task OnInitializedAsync()
     {
-
         InitMap();
         locationService.GeoLocationStateHasChanged += LocationUpdated;
     }
@@ -49,24 +48,67 @@
         Console.WriteLine($"Lat: {loc.Location.Coords.Latitude}, {loc.Location.Coords.Longitude} - Accuracy: {loc.Location.Coords.Accuracy}" );
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+    }
+
 
     private void InitMap()
     {
         mapOptions = new MapOptions()
         {
-            Zoom = 13,
+            Zoom = 12,
             Center = new LatLngLiteral()
             {
-                Lat = 13.505892,
-                Lng = 100.8162
+                Lat = 52.216081,
+                Lng = 6.885418,
             },
             MapTypeId = MapTypeId.Roadmap
         };
     }
 
-
-    protected override async Task OnParametersSetAsync()
+    private async Task OnAfterMapInit()
     {
+        await AddSingleMarker();
+    }
+
+    private async Task AddSingleMarker()
+    {
+        Console.WriteLine("Adding single marker");
+        MarkerOptions options = new MarkerOptions()
+        {
+            Position = new LatLngLiteral(6.876612, 52.270089),
+            Map = map.InteropObject,
+            Icon = new Icon()
+            {
+                Url = "/img/currentlocation.png",
+                Anchor = new Point()
+                {
+                    X = 10,
+                    Y = 10
+                },
+                Size = new Size()
+                {
+                    Width = 40,
+                    Height = 40
+                },
+                ScaledSize = new Size()
+                {
+                    Width = 20,
+                    Height = 20
+                }
+            }
+        };
+
+        currentLocationMarker = await Marker.CreateAsync(map.JsRuntime, options);
+        await currentLocationMarker.SetMap(map.InteropObject);
+
 
     }
 
