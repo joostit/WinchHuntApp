@@ -46,6 +46,9 @@
         Console.WriteLine("SiteMap: Location Updated");
         var loc = locationService.CurrentPosition;
         Console.WriteLine($"Lat: {loc.Location.Coords.Latitude}, {loc.Location.Coords.Longitude} - Accuracy: {loc.Location.Coords.Accuracy}" );
+
+        UpdateLocationMarker(loc.Location.Coords.Latitude, loc.Location.Coords.Longitude).Wait();
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -61,33 +64,70 @@
 
     private void InitMap()
     {
-        mapOptions = new MapOptions()
-        {
-            Zoom = 12,
-            Center = new LatLngLiteral()
-            {
-                Lat = 52.216081,
-                Lng = 6.885418,
-            },
-            MapTypeId = MapTypeId.Roadmap
-        };
+        mapOptions = GetMapOptions();
     }
 
     private async Task OnAfterMapInit()
     {
-        await AddSingleMarker();
+        await locationService.GetGeolocation();
+
+        var location = locationService.CurrentPosition;
+
+        MapOptions options = GetMapOptions();
+        options.Center = new LatLngLiteral(location.Location.Coords.Longitude, location.Location.Coords.Latitude);
+
+
+        await UpdateLocationMarker(location.Location.Coords.Latitude, location.Location.Coords.Longitude);
+
+
     }
 
-    private async Task AddSingleMarker()
+
+    private MapOptions GetMapOptions()
     {
-        Console.WriteLine("Adding single marker");
+        return new MapOptions()
+        {
+            Zoom = 12,
+            Center = new LatLngLiteral()
+            {
+                Lat = 52.999641,
+                Lng = 5.166507,
+            },
+            MapTypeId = MapTypeId.Sattellite,
+            MapTypeControl = false,
+            PanControl = false,
+            RotateControl = false,
+            ScaleControl = false,
+            ZoomControl = false,
+            StreetViewControl = false
+        };
+    }
+
+
+    private async Task UpdateLocationMarker(double lat, double lon)
+    {
+        if (currentLocationMarker == null)
+        {
+            Console.WriteLine("Creating new marker");
+            await CreateLocationMarker(lat, lon);
+        }
+        else
+        {
+            Console.WriteLine("Updating existing marker");
+            await currentLocationMarker.SetPosition(new LatLngLiteral(lon, lat));
+        }
+    }
+
+
+    private async Task CreateLocationMarker(double lat, double lon)
+    {
         MarkerOptions options = new MarkerOptions()
         {
-            Position = new LatLngLiteral(6.876612, 52.270089),
+            Position = new LatLngLiteral(lon, lat),
             Map = map.InteropObject,
             Icon = new Icon()
             {
-                Url = "/img/currentlocation.png",
+                Url = "/img/currentlocation.svg",
                 Anchor = new Point()
                 {
                     X = 10,
@@ -107,9 +147,6 @@
         };
 
         currentLocationMarker = await Marker.CreateAsync(map.JsRuntime, options);
-        await currentLocationMarker.SetMap(map.InteropObject);
-
-
     }
 
 
