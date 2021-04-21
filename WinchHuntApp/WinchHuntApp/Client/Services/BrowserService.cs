@@ -46,6 +46,7 @@ namespace WinchHuntApp.Client.Services
             return await jsRuntime.InvokeAsync<int>("browserResize.getInnerWidth");
         }
 
+
     }
 
     public class Dimensions

@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Majorsoft.Blazor.Components.Maps;
-using Majorsoft.Blazor.Components.Common.JsInterop;
 using WinchHuntApp.Client.Services;
 
 namespace WinchHuntApp.Client
@@ -32,18 +31,18 @@ namespace WinchHuntApp.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WinchHuntApp.ServerAPI"));
 
-            builder.Services.AddJsInteropExtensions();
             builder.Services.AddSingleton<IMapService, MapService>();
             builder.Services.AddScoped<BrowserService>();
 
             builder.Services.AddApiAuthorization();
-            builder.Services.AddMapExtensions();
             
 
 
             var host = builder.Build();
 
             var mapService = host.Services.GetRequiredService<IMapService>();
+            var browserService = host.Services.GetRequiredService<BrowserService>();
+
             await mapService.Initialize();
 
             await host.RunAsync();

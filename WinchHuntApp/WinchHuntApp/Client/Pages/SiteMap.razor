@@ -3,183 +3,131 @@
 @inject IMapService mapService
 @inject BrowserService browserService
 
-@using Majorsoft.Blazor.Components.Maps
 
 @using WinchHuntApp.Client.Services
-
-@*Only if you want to use Google Maps*@
-@using Majorsoft.Blazor.Components.Maps.Google
-
-@*Other Maps dependencies*@
-@using Majorsoft.Blazor.Components.Common.JsInterop.Geo
-@using Majorsoft.Blazor.Components
-@using Majorsoft.Blazor.Components.Core.Extensions
-@*@using BrowserInterop.Extensions*@
-@*@using BrowserInterop.Geolocation*@
+@using GoogleMapsComponents
+@using GoogleMapsComponents.Maps
 
 @page "/sitemap"
 
-    <div ref="mapDiv" 
-        id ="mapDivId"
-        style="
+<div ref="mapDiv"
+     id="mapDivId"
+     style="
             top: 5%;
             bottom: 5%;
             left: 5%;
             right: 5%;
-            background-color: yellow" >
-        <GoogleMap 
-                   
-                   @ref="googleMap"
-                   ApiKey="@mapService.ApiKey"
-                   OnMapInitialized="@(() => {})"
-                   BackgroundColor="@_jsMapBackgroundColor"
-                   @bind-Height="@mapHeight"
-                   @bind-Width="@mapWidth"
-                   Center="@_jsMapCenter"
-                   Zoom="@_jsMapZoomLevel"
-                   ZoomControl="@_jsZoomControl"
-                   MapType="@_jsMapType"
-                   RotateControl="@_jsRotateControl"
-                   ScaleControl="@_jsScaleControl"
-                   StreetViewControl="@_jsStreetViewControl"
-                   ClickableIcons="@_jsClickableIcons"
-                   DisableDefaultUI="@_jsDisableDefaultUI"
-                   DraggableCursor="crosshair"
-                   DraggingCursor="move"
-                   FullscreenControl="@_jsFullscreenControl"
-                   MapTypeControl="@_jsMapTypeControl"
-                   CenterCurrentLocationOnLoad="@_jsMapCenterCurrentLocation"
-                   CustomControls="@_jsCustomControls"
-                   Markers="@_jsMarkers"
-                   OnMapZoomLevelChanged="@OnMapZoomLevelChanged">
-        </GoogleMap>
-    </div>
+            background-color: yellow">
 
-    @code {
+   <GoogleMap @ref="@map" Id="map1" Options="@mapOptions"></GoogleMap>
 
-        private ElementReference mapDiv;
+</div>
 
-        private int mapWidth = 200;
-        private int mapHeight = 200;
+@code {
 
-        private GeolocationData _jsMapCenter = new GeolocationData("Times Square New York");
-        private string _jsMapBackgroundColor = "lightblue";
-        private byte _jsMapZoomLevel = 10;
-        private bool _jsMapCenterCurrentLocation = true; //Overrides Center. Async operation which micht fail with Location services
-        private GoogleMapTypes _jsMapType = GoogleMapTypes.Satellite;
-        private bool _jsClickableIcons = true;
-        private bool _jsDisableDefaultUI = false;
-        private bool _jsFullscreenControl = false;
-        private bool _jsMapTypeControl = false;
+    private ElementReference mapDiv;
+    private GoogleMap map;
 
-        private bool _jsRotateControl = false;
-        private bool _jsScaleControl = false;
-        private bool _jsStreetViewControl = false;
-        private bool _jsZoomControl = false;
-
-        private List<GoogleMapCustomControl> _jsCustomControls = new List<GoogleMapCustomControl>();
-        private ObservableRangeCollection<GoogleMapMarker> _jsMarkers = new ObservableRangeCollection<GoogleMapMarker>();
-        private ObservableRangeCollection<GoogleMapMarker> _jsMarkersTmp = new ObservableRangeCollection<GoogleMapMarker>();
+    private MapOptions mapOptions;
 
 
-        private GoogleMap googleMap;
-        private GoogleMapMarker currentLocationMarker = null;
+    protected override async Task OnInitializedAsync()
+    {
 
-        protected override async Task OnInitializedAsync()
+
+        mapOptions = new MapOptions()
         {
-
-            BrowserService.OnResize += onResize;
-
-
-            await googleMap.CenterCurrentLocationOnMapAsync();
-            Console.WriteLine($"GoogleMap: {googleMap}");
-
-            
-
-        }
-
-
-        protected override async Task OnParametersSetAsync()
-        {
-            GeolocationService service = new GeolocationService(jsRuntime);
-            await service.AddGeolocationWatcherAsync(GeoLocationUpdated, true);
-        }
-
-
-        private async Task onResize()
-        {
-            updateMapSize();
-        }
-
-
-        private async Task updateMapSize()
-        {
-            var dims = await browserService.GetInnerDimensions("mapDivId");
-            Console.WriteLine($"Browser size updated. W: {dims.Width}, H: {dims.Height}");
-
-            mapWidth = dims.Width;
-            mapHeight = dims.Height;
-            googleMap.Width = dims.Width;
-        }
-
-
-        private async Task GeoLocationUpdated(GeolocationResult location)
-        {
-            
-            if (location.IsSuccess)
+            Zoom = 13,
+            Center = new LatLngLiteral()
             {
+                Lat = 13.505892,
+                Lng = 100.8162
+            },
+            MapTypeId = MapTypeId.Roadmap
+        };
 
-                GeolocationCoordinate position = new GeolocationCoordinate(52.270088, 6.876613); //new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude);
-
-                if (currentLocationMarker == null)
-                {
-                    currentLocationMarker = CreateLocationMarker(position);
-                    googleMap.Markers.Add(currentLocationMarker);
-                }
-                else
-                {
-                    currentLocationMarker.Position = position;
-                }
-
-                Console.WriteLine("GeoLocation result is true");
-                Console.WriteLine($"Result: {location.ToString()}");
-            }
-        }
-
-        private GoogleMapMarker CreateLocationMarker(GeolocationCoordinate position)
-        {
-
-            GoogleMapMarker retVal = new GoogleMapMarker(position);
-
-            retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.png")
-            {
-                Anchor = new Point()
-                {
-                    X = 10,
-                    Y = 10
-                },
-                Size = new Rect()
-                {
-                    Width = 40,
-                    Height = 40
-                },
-                ScaledSize = new Rect()
-                {
-                    Width  = 20,
-                    Height = 20
-                }
-            };
-
-
-            return retVal;
-        }
-
-
-
-        private async Task OnMapZoomLevelChanged()
-        {
-
-        }
+        BrowserService.OnResize += onResize;
 
 
     }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+    }
+
+
+    private async Task onResize()
+    {
+        await updateMapSize();
+    }
+
+
+    private async Task updateMapSize()
+    {
+        var dims = await browserService.GetInnerDimensions("mapDivId");
+        Console.WriteLine($"Browser size updated. W: {dims.Width}, H: {dims.Height}");
+    }
+
+
+    //private async Task GeoLocationUpdated(GeolocationResult location)
+    //{
+
+    //    if (location.IsSuccess)
+    //    {
+
+    //        GeolocationCoordinate position = new GeolocationCoordinate(52.270088, 6.876613); //new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude);
+
+    //        if (currentLocationMarker == null)
+    //        {
+    //            currentLocationMarker = CreateLocationMarker(position);
+    //            googleMap.Markers.Add(currentLocationMarker);
+    //        }
+    //        else
+    //        {
+    //            currentLocationMarker.Position = position;
+    //        }
+
+    //        Console.WriteLine("GeoLocation result is true");
+    //        Console.WriteLine($"Result: {location.ToString()}");
+    //    }
+    //}
+
+    //private GoogleMapMarker CreateLocationMarker(GeolocationCoordinate position)
+    //{
+
+    //    GoogleMapMarker retVal = new GoogleMapMarker(position);
+
+    //    retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.png")
+    //    {
+    //        Anchor = new Point()
+    //        {
+    //            X = 10,
+    //            Y = 10
+    //        },
+    //        Size = new Rect()
+    //        {
+    //            Width = 40,
+    //            Height = 40
+    //        },
+    //        ScaledSize = new Rect()
+    //        {
+    //            Width  = 20,
+    //            Height = 20
+    //        }
+    //    };
+
+
+    //    return retVal;
+    //}
+
+
+
+    //private async Task OnMapZoomLevelChanged()
+    //{
+
+    //}
+
+
+}
