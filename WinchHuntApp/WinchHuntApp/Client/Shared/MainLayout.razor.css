@@ -45,9 +45,17 @@
     }
 
     .main > div {
-        height: calc(100vh - 3.5em);
+        padding-top: 3.7rem;
+        height: calc(100vh - 0.2rem);
         padding-left: 0.5rem !important;
         padding-right: 0.5rem !important;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: absolute;
+        z-index: 999;
+        top: 0;
     }
 
 }
