@@ -43,6 +43,13 @@
     .top-row a, .top-row .btn-link {
         margin-left: 0;
     }
+
+    .main > div {
+        height: calc(100vh - 3.5em);
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
 }
 
 @media (min-width: 641px) {
@@ -66,5 +73,6 @@
     .main > div {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
+        height: 100%;
     }
 }
