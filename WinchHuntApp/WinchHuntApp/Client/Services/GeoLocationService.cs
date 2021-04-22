@@ -45,11 +45,19 @@ namespace WinchHuntApp.Client.Services
 
         public async Task StartWatchPosition()
         {
+            PositionOptions options = new PositionOptions()
+            {
+                EnableHighAccuracy = true,
+                MaximumAge = 0,
+                Timeout = 0                
+            };
+
             geopositionWatcher = await geolocationWrapper.WatchPosition(async (p) =>
             {
                 CurrentPosition = p;
                 GeoLocationStateHasChanged?.Invoke(this, EventArgs.Empty);
-            });
+            },
+            options);
         }
 
         public void Dispose()

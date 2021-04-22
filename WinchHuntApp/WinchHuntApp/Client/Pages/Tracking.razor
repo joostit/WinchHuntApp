@@ -73,10 +73,6 @@
 
         var location = locationService.CurrentPosition;
 
-        MapOptions options = GetMapOptions();
-        options.Center = new LatLngLiteral(location.Location.Coords.Longitude, location.Location.Coords.Latitude);
-
-
         await UpdateLocationMarker(location.Location.Coords.Latitude, location.Location.Coords.Longitude);
 
 
@@ -110,6 +106,8 @@
         {
             Console.WriteLine("Creating new marker");
             await CreateLocationMarker(lat, lon);
+
+            await map.InteropObject.SetCenter(new LatLngLiteral(lon, lat));
         }
         else
         {
@@ -148,66 +146,6 @@
 
         currentLocationMarker = await Marker.CreateAsync(map.JsRuntime, options);
     }
-
-
-
-    //private async Task GeoLocationUpdated(GeolocationResult location)
-    //{
-
-    //    if (location.IsSuccess)
-    //    {
-
-    //        GeolocationCoordinate position = new GeolocationCoordinate(52.270088, 6.876613); //new GeolocationCoordinate(location.Coordinates.Latitude, location.Coordinates.Longitude);
-
-    //        if (currentLocationMarker == null)
-    //        {
-    //            currentLocationMarker = CreateLocationMarker(position);
-    //            googleMap.Markers.Add(currentLocationMarker);
-    //        }
-    //        else
-    //        {
-    //            currentLocationMarker.Position = position;
-    //        }
-
-    //        Console.WriteLine("GeoLocation result is true");
-    //        Console.WriteLine($"Result: {location.ToString()}");
-    //    }
-    //}
-
-    //private GoogleMapMarker CreateLocationMarker(GeolocationCoordinate position)
-    //{
-
-    //    GoogleMapMarker retVal = new GoogleMapMarker(position);
-
-    //    retVal.Icon = new GoogleMapMarkerLabelIcon("/img/currentlocation.png")
-    //    {
-    //        Anchor = new Point()
-    //        {
-    //            X = 10,
-    //            Y = 10
-    //        },
-    //        Size = new Rect()
-    //        {
-    //            Width = 40,
-    //            Height = 40
-    //        },
-    //        ScaledSize = new Rect()
-    //        {
-    //            Width  = 20,
-    //            Height = 20
-    //        }
-    //    };
-
-
-    //    return retVal;
-    //}
-
-
-
-    //private async Task OnMapZoomLevelChanged()
-    //{
-
-    //}
 
 
 }
