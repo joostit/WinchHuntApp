@@ -8,10 +8,10 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 20 20"
+   viewBox="0 0 10 10"
    version="1.1"
    id="svg5"
-   sodipodi:docname="circle.svg"
+   sodipodi:docname="currentlocation.svg"
    inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)">
   <metadata
      id="metadata16">
@@ -33,17 +33,19 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="2350"
-     inkscape:window-height="1458"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
      id="namedview14"
      showgrid="false"
-     inkscape:zoom="50.4"
-     inkscape:cx="10"
-     inkscape:cy="10"
-     inkscape:window-x="753"
-     inkscape:window-y="172"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg5" />
+     inkscape:zoom="35.638182"
+     inkscape:cx="7.7563432"
+     inkscape:cy="10.394489"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5"
+     inkscape:document-rotation="0"
+     showguides="false" />
   <defs
      id="defs9">
     <linearGradient
@@ -55,54 +57,48 @@
          id="stop856" />
     </linearGradient>
     <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter3352"
-       x="-0.0049110635"
-       width="1.0098221"
-       y="-0.0049110635"
-       height="1.0098221">
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter1379">
+      <feFlood
+         flood-opacity="0.341176"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood1369" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite1371" />
       <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.036832976"
-         id="feGaussianBlur3354" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter2585"
-       x="-0.082767065"
-       width="1.1655341"
-       y="-0.082767065"
-       height="1.1655341">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.27589022"
-         id="feGaussianBlur2587" />
+         in="composite1"
+         stdDeviation="0.4"
+         result="blur"
+         id="feGaussianBlur1373" />
+      <feOffset
+         dx="0.2"
+         dy="0.2"
+         result="offset"
+         id="feOffset1375" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite1377" />
     </filter>
   </defs>
   <circle
-     style="fill:#00a4ff;fill-opacity:0.5;stroke-width:0.264583;opacity:1"
-     id="path29"
-     cx="10"
-     cy="10"
-     r="10" />
+     style="fill:#ffffff;stroke:#999998;stroke-width:0.0792079;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1379)"
+     id="path12"
+     cx="5"
+     cy="5"
+     r="3.9603961" />
   <circle
-     style="fill:#0000ff;fill-opacity:0;stroke:#006fff;stroke-width:0.245591;stroke-opacity:1;filter:url(#filter3352)"
-     id="path856"
-     cx="10"
-     cy="10"
-     r="10" />
-  <circle
-     style="fill:#0000ff;stroke-width:0.264583"
-     id="path24"
-     cx="10"
-     cy="10"
-     r="5" />
-  <circle
-     style="fill:#00ccff;stroke-width:0.264583;fill-opacity:1;stroke:#007cff;stroke-opacity:1;opacity:1;filter:url(#filter2585)"
-     id="path24-5"
-     cx="10"
-     cy="10"
+     style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0857143;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="path1381"
+     cx="5"
+     cy="5"
      r="3" />
 </svg>
