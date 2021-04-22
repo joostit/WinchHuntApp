@@ -6,14 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\img\currentlocation.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="wwwroot\img\currentlocation.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BlazorGoogleMaps" Version="1.0.14" />
     <PackageReference Include="BrowserInterop" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.5" />
