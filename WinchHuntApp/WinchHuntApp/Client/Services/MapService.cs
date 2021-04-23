@@ -5,14 +5,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WinchHuntApp.Client.Tools;
 
 namespace WinchHuntApp.Client.Services
 {
     public class MapService : IMapService
     {
 
+        private const string getMapsKeyUrl = "/api/maps/apiKey";
+
         private PublicHttpClient http;
         private readonly IJSRuntime jsRuntime;
+        
 
         public string ApiKey { get; set; }
 
@@ -37,17 +41,11 @@ namespace WinchHuntApp.Client.Services
 
         private async Task<string> GetMapsApiKey()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/api/maps/apiKey");
+            GetRequest request = new GetRequest(http.Client, getMapsKeyUrl);
+
             request.Headers.Add("key-request-token", "!IReallyWantIt!");
 
-            var response = await http.Client.SendAsync(request);
-            var responseBytes = await response.Content.ReadAsByteArrayAsync();
-
-            return JsonSerializer.Deserialize<String>(responseBytes, 
-                new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+            return await request.Get<string>();
         }
 
     }
