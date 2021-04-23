@@ -16,6 +16,8 @@ variables:
   appName: 'WinchHuntApp'
 
 steps:
+- script: 'echo Build number: $(Build.BuildNumber)'
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
