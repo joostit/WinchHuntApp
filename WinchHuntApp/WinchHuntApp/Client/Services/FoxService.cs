@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WinchHuntApp.Client.Utils;
 using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Client.Services
@@ -10,23 +11,27 @@ namespace WinchHuntApp.Client.Services
     public class FoxService
     {
 
-        private const string getFoxesUrl = "";
+        private const string getFoxesUrl = "api/foxes";
 
-        private PublicHttpClient http;
+        private PublicHttpClient publicHttp;
         private readonly IJSRuntime jsRuntime;
 
 
-        public FoxService(PublicHttpClient http, IJSRuntime js)
+        public FoxService(PublicHttpClient publicHttp, IJSRuntime js)
         {
             jsRuntime = js;
-            this.http = http;
+            this.publicHttp = publicHttp;
         }
 
 
 
-        public Dictionary<string, WinchFox> GetFoxes()
+        public async Task<List<WinchFox>> GetFoxes()
         {
-            return null;
+            GetRequest request = new GetRequest(publicHttp.Client, getFoxesUrl);
+
+            request.Headers.Add("fox-access-token", "fakeHeader");
+
+            return await request.Get<List<WinchFox>>();
         }
 
 

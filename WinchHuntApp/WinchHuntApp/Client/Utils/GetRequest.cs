@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace WinchHuntApp.Client.Tools
+namespace WinchHuntApp.Client.Utils
 {
     public class GetRequest
     {

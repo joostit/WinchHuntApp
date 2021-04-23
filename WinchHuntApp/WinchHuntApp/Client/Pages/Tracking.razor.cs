@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Client.Pages
 {
@@ -16,6 +17,11 @@ namespace WinchHuntApp.Client.Pages
         private MapOptions mapOptions;
         private Circle accuracyCircle;
         private Marker currentLocationMarker;
+        private System.Threading.Timer foxUpdateTimer;
+        private List<FoxMarker> foxMarkers = new List<FoxMarker>();
+        private volatile bool isUpdatingFoxes = false;
+        bool isUpdatingLocation = false;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -34,13 +40,79 @@ namespace WinchHuntApp.Client.Pages
 
         }
 
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await StartFoxListener();
+        }
+
+
+        protected override async Task OnParametersSetAsync()
         {
 
         }
 
-        protected override async Task OnParametersSetAsync()
+
+        private async Task StartFoxListener()
         {
+            await Task.Run(() =>
+            {
+                foxUpdateTimer = new System.Threading.Timer(async (object na) =>
+                {
+                    if (!isUpdatingFoxes)
+                    {
+                        try
+                        {
+                            isUpdatingFoxes = true;
+                            List<WinchFox> update = await foxService.GetFoxes();
+                            await UpdateFoxes(update);
+                        }
+                        finally
+                        {
+                            isUpdatingFoxes = false;
+                        }
+                    }
+                }, null, 2000, 2000);
+            });
+        }
+
+
+        private async Task UpdateFoxes(List<WinchFox> update)
+        {
+            // Find foxMarkers that don't exist in the new update
+            List<FoxMarker> toDelete = new List<FoxMarker>();
+            foreach(var existing in foxMarkers)
+            {
+                var found = update.Where(fox => fox.Device.Id == existing.Fox.Device.Id).FirstOrDefault();
+                if(found == null)
+                {
+                    toDelete.Add(existing);
+                }
+            }
+
+            // Remove non-existing fox markers
+            foreach(var markerToDelete in toDelete)
+            {
+                //await markerToDelete.Marker.SetMap(null);
+                markerToDelete.Marker.Dispose();
+                foxMarkers.Remove(markerToDelete);
+            }
+            
+            // Create new- or update existing markers
+            foreach(WinchFox updateFox in update)
+            {
+                var existing = foxMarkers.Where(f => f.Fox.Device.Id == updateFox.Device.Id).FirstOrDefault();
+                if (existing == null)
+                {
+                    FoxMarker newMarker = await CreateFoxMarker(updateFox);
+                    foxMarkers.Add(newMarker);
+                }
+                else
+                {
+                    existing.Fox = updateFox;
+                    await existing.Marker.SetPosition(new LatLngLiteral(updateFox.Gps.Longitude, updateFox.Gps.Latitude));
+                }
+            }
 
         }
 
@@ -50,6 +122,7 @@ namespace WinchHuntApp.Client.Pages
             mapOptions = GetMapOptions();
         }
 
+
         private async Task OnAfterMapInit()
         {
             await locationService.GetGeolocation();
@@ -57,8 +130,6 @@ namespace WinchHuntApp.Client.Pages
             var location = locationService.CurrentPosition;
 
             await UpdateLocationMarker(location.Location.Coords.Latitude, location.Location.Coords.Longitude, location.Location.Coords.Accuracy);
-
-
         }
 
 
@@ -86,20 +157,31 @@ namespace WinchHuntApp.Client.Pages
 
         private async Task UpdateLocationMarker(double lat, double lon, double accuracy)
         {
-            if (currentLocationMarker == null)
+            if (!isUpdatingLocation)
             {
-                Console.WriteLine("Creating new marker");
-                await CreateLocationMarker(lat, lon);
-                await CreateAccuracyCircle(lat, lon, accuracy);
+                try
+                {
+                    isUpdatingLocation = true;
+                    if (currentLocationMarker == null)
+                    {
+                        Console.WriteLine("Creating new location marker");
+                        await CreateLocationMarker(lat, lon);
+                        await CreateAccuracyCircle(lat, lon, accuracy);
 
-                await map.InteropObject.SetCenter(new LatLngLiteral(lon, lat));
-            }
-            else
-            {
-                Console.WriteLine("Updating existing marker");
-                await currentLocationMarker.SetPosition(new LatLngLiteral(lon, lat));
-                await accuracyCircle.SetCenter(new LatLngLiteral(lon, lat));
-                await accuracyCircle.SetRadius(accuracy);
+                        await map.InteropObject.SetCenter(new LatLngLiteral(lon, lat));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Updating location");
+                        await currentLocationMarker.SetPosition(new LatLngLiteral(lon, lat));
+                        await accuracyCircle.SetCenter(new LatLngLiteral(lon, lat));
+                        await accuracyCircle.SetRadius(accuracy);
+                    }
+                }
+                finally
+                {
+                    isUpdatingLocation = false;
+                }
             }
         }
 
@@ -135,6 +217,40 @@ namespace WinchHuntApp.Client.Pages
         }
 
 
+        private async Task<FoxMarker> CreateFoxMarker(WinchFox fox)
+        {
+            MarkerOptions options = new MarkerOptions()
+            {
+                Position = new LatLngLiteral(fox.Gps.Longitude, fox.Gps.Latitude),
+                Map = map.InteropObject,
+                Icon = new Icon()
+                {
+                    Url = "/img/target.svg",
+                    Anchor = new Point()
+                    {
+                        X = 13,
+                        Y = 13
+                    },
+                    Size = new Size()
+                    {
+                        Width = 32,
+                        Height = 32
+                    },
+                    ScaledSize = new Size()
+                    {
+                        Width = 26,
+                        Height = 26
+                    }
+                }
+            };
+
+            FoxMarker marker = new();
+            marker.Marker = await Marker.CreateAsync(map.JsRuntime, options);
+            marker.Fox = fox;
+            return marker;
+        }
+
+
         private async Task CreateAccuracyCircle(double lat, double lon, double accuracy)
         {
             accuracyCircle = await Circle.CreateAsync(map.JsRuntime, new CircleOptions()
@@ -150,9 +266,18 @@ namespace WinchHuntApp.Client.Pages
             });
         }
 
+
         public void Dispose()
         {
+            foxUpdateTimer.Dispose();
             locationService.GeoLocationStateHasChanged -= LocationUpdated;
         }
+    }
+
+
+    class FoxMarker
+    {
+        public Marker Marker { get; set; }
+        public WinchFox Fox { get; set; }
     }
 }

@@ -33,6 +33,7 @@ namespace WinchHuntApp.Client
 
             builder.Services.AddSingleton<IMapService, MapService>();
             builder.Services.AddScoped<GeoLocationService>();
+            builder.Services.AddScoped<FoxService>();
 
             builder.Services.AddApiAuthorization();
             

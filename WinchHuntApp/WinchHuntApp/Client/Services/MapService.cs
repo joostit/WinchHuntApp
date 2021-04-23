@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WinchHuntApp.Client.Tools;
+using WinchHuntApp.Client.Utils;
 
 namespace WinchHuntApp.Client.Services
 {
