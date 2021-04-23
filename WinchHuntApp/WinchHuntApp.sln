@@ -22,6 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{9A4AF47C-1CF3-4F4D-B275-1D49AECEFA43}"
 	ProjectSection(SolutionItems) = preProject
 		AddMigration.ps1 = AddMigration.ps1
+		Set-PublishBuild.ps1 = Set-PublishBuild.ps1
 		UpdateDatabase.ps1 = UpdateDatabase.ps1
 	EndProjectSection
 EndProject

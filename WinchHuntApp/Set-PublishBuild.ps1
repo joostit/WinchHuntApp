@@ -1,0 +1,1 @@
+((Get-Content -path $args[0] -Raw) -replace '0.1010101010',$args[1]) | Set-Content -Path $args[0]

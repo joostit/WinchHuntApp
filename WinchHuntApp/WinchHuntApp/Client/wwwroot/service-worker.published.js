@@ -1,7 +1,7 @@
 // Caution! Be sure you understand the caveats before publishing an application with
 // offline support. See https://aka.ms/blazor-offline-considerations
 
-const BUILD_VERSION = 1.00000000;
+const BUILD_VERSION = 0.1010101010;
 console.log("Running service worker build version: " + BUILD_VERSION);
 
 self.importScripts('./service-worker-assets.js');
