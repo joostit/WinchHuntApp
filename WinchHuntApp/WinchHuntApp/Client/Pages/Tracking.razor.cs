@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WinchHuntApp.Client.Pages
 {
-    public partial class Tracking : ComponentBase
+    public partial class Tracking : ComponentBase, IDisposable
     {
 
         private ElementReference mapDiv;
@@ -150,5 +150,9 @@ namespace WinchHuntApp.Client.Pages
             });
         }
 
+        public void Dispose()
+        {
+            locationService.GeoLocationStateHasChanged -= LocationUpdated;
+        }
     }
 }

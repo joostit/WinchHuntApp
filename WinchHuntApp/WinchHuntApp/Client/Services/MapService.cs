@@ -5,14 +5,12 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WinchHuntApp.Client.Data;
 
 namespace WinchHuntApp.Client.Services
 {
     public class MapService : IMapService
     {
 
-        public MapsSettings Settings { get; private set; } = new MapsSettings();
         private PublicHttpClient http;
         private readonly IJSRuntime jsRuntime;
 
@@ -51,6 +49,7 @@ namespace WinchHuntApp.Client.Services
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
         }
+
     }
 }
 
