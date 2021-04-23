@@ -31,7 +31,8 @@ namespace WinchHuntApp.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WinchHuntApp.ServerAPI"));
 
-            builder.Services.AddSingleton<IMapService, MapService>();
+            builder.Services.AddScoped<BuildNumberService>();
+            builder.Services.AddScoped<IMapService, MapService>();
             builder.Services.AddScoped<GeoLocationService>();
             builder.Services.AddScoped<FoxService>();
 
