@@ -14,16 +14,14 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   appName: 'WinchHuntApp'
-  serviceWorkerPath: 'WinchHuntApp\WinchHuntApp\Client\wwwroot\service-worker.published.js'
 
 steps:
-- script: 'echo Build number: $(Build.BuildNumber)'
 
 - task: PowerShell@2
   displayName: 'Set Build number'
   inputs:
     filePath: 'WinchHuntApp/Set-PublishBuild.ps1'
-    arguments: '$(serviceWorkerPath) $(Build.BuildNumber)'
+    arguments: '$(Build.BuildNumber)'
 
 - task: NuGetToolInstaller@1
 
