@@ -8,7 +8,7 @@ using WinchHuntApp.Server.Data;
 
 namespace WinchHuntApp.Server.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(WinchHuntContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

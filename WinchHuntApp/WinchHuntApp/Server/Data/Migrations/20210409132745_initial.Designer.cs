@@ -9,7 +9,7 @@ using WinchHuntApp.Server.Data;
 
 namespace WinchHuntApp.Server.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(WinchHuntContext))]
     [Migration("20210409132745_initial")]
     partial class initial
     {

@@ -6,16 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WinchHuntApp.Server.Data.Db;
 using WinchHuntApp.Server.Models;
 
 namespace WinchHuntApp.Server.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class WinchHuntContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(
+
+
+        public WinchHuntContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
+
+
+
+
+
         }
     }
 }
