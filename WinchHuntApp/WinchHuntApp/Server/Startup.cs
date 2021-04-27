@@ -13,6 +13,7 @@ using WinchHuntApp.Server.Models;
 using Majorsoft.Blazor.Components.Maps;
 using WinchHuntApp.Server.Services;
 
+
 namespace WinchHuntApp.Server
 {
     public class Startup
@@ -31,6 +32,9 @@ namespace WinchHuntApp.Server
             services.AddDbContext<WinchHuntContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<InMemoryDbContext>(options => 
+                options.UseInMemoryDatabase(databaseName: "WhInMemoryDb"));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

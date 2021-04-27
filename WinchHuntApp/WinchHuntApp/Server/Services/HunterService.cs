@@ -12,12 +12,14 @@ namespace WinchHuntApp.Server.Services
     public class HunterService : IHunterService
     {
 
-        private List<DbHunter> Hunters { get; set; } = new List<DbHunter>();
-        private readonly WinchHuntContext context;
+        
+        private readonly WinchHuntContext dbContext;
+        private InMemoryDbContext inMemoryDb;
 
-        public HunterService(WinchHuntContext ctx)
+        public HunterService(WinchHuntContext ctx, InMemoryDbContext inMemoryDb)
         {
-            context = ctx;
+            dbContext = ctx;
+            this.inMemoryDb = inMemoryDb;
         }
 
 
@@ -25,7 +27,7 @@ namespace WinchHuntApp.Server.Services
         public async Task<HunterDto> GetHunter()
         {
             HunterDto result = new HunterDto();
-            DbHunter dbHunter = Hunters.FirstOrDefault();
+            DbHunter dbHunter = inMemoryDb.Hunters.FirstOrDefault();
             
             if(dbHunter != null)
             {
@@ -41,26 +43,26 @@ namespace WinchHuntApp.Server.Services
             DbHunter dbHunter;
 
             // Just a safeguard in case of inconsistencies. There can be only one ;)
-            if (Hunters.Count() > 1)
+            if (inMemoryDb.Hunters.Count() > 1)
             {
-                List<DbHunter> toRemove = Hunters.ToList();
+                List<DbHunter> toRemove = inMemoryDb.Hunters.ToList();
 
-                toRemove.ForEach(h => Hunters.Remove(h));
+                toRemove.ForEach(h => inMemoryDb.Hunters.Remove(h));
             }
 
-            if (Hunters.Count() == 0)
+            if (inMemoryDb.Hunters.Count() == 0)
             {
                 dbHunter = new DbHunter();
                 UpdateHunter(dbHunter, hunter);
-                Hunters.Add(dbHunter);
+                inMemoryDb.Hunters.Add(dbHunter);
             }
             else
             {
-                dbHunter = Hunters.First();
+                dbHunter = inMemoryDb.Hunters.First();
                 UpdateHunter(dbHunter, hunter);
             }
 
-            
+            await inMemoryDb.SaveChangesAsync();
         }
 
 

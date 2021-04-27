@@ -15,13 +15,14 @@ namespace WinchHuntApp.Server.Services
     public class FoxService : IFoxService
     {
 
-        private List<DbFox> Foxes { get; set; } = new List<DbFox>();
 
-        private readonly WinchHuntContext context;
+        private readonly InMemoryDbContext inMemoryDb;
+        private readonly WinchHuntContext dbContext;
 
-        public FoxService(WinchHuntContext ctx)
+        public FoxService(WinchHuntContext ctx, InMemoryDbContext inMemoryDb)
         {
-            context = ctx;
+            dbContext = ctx;
+            this.inMemoryDb = inMemoryDb;
         }
 
 
@@ -31,7 +32,7 @@ namespace WinchHuntApp.Server.Services
 
             await Task.Run(() =>
             {
-                foreach (var fox in Foxes)
+                foreach (var fox in inMemoryDb.Foxes)
                 {
                     retVal.Add(CreateFoxDto(fox));
                 }
@@ -68,7 +69,7 @@ namespace WinchHuntApp.Server.Services
 
             List<DbFox> foxesToRemove = new List<DbFox>();
 
-            foreach (var existing in Foxes)
+            foreach (var existing in inMemoryDb.Foxes)
             {
                 bool containsInUpdate = post.Devices.Where(d => existing.DeviceId.Equals(d.Device.Id)).SingleOrDefault() != null;
 
@@ -81,23 +82,24 @@ namespace WinchHuntApp.Server.Services
 
             foreach (var teRemove in foxesToRemove)
             {
-                Foxes.Remove(teRemove);
+                inMemoryDb.Foxes.Remove(teRemove);
             }
 
 
             foreach (var update in post.Devices)
             {
-                DbFox existing = Foxes.Where(f => f.DeviceId.Equals(update.Device.Id)).SingleOrDefault();
+                DbFox existing = await inMemoryDb.Foxes.Where(f => f.DeviceId.Equals(update.Device.Id)).SingleOrDefaultAsync();
 
                 if (existing == null)
                 {
                     existing = new DbFox();
-                    Foxes.Add(existing);
+                    inMemoryDb.Foxes.Add(existing);
                 }
 
                 UpdateExistingFox(existing, update);
             }
 
+            await inMemoryDb.SaveChangesAsync();
         }
 
         private void UpdateExistingFox(DbFox existing, WinchFox update)
@@ -120,7 +122,7 @@ namespace WinchHuntApp.Server.Services
 
         public async Task<WinchFox> GetFoxAsync(string id)
         {
-            var dbObject = Foxes.Where(f => f.DeviceId.Equals(id)).FirstOrDefault();
+            var dbObject = await inMemoryDb.Foxes.Where(f => f.DeviceId.Equals(id)).FirstOrDefaultAsync();
 
             if (dbObject != null)
             {

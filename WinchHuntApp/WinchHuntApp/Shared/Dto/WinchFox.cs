@@ -8,6 +8,13 @@ namespace WinchHuntApp.Shared.Dto
 {
     public class WinchFox : WinchHuntDevice
     {
+
+
+        public WinchFox()
+        {
+            Gps = new GpsInfo();
+        }
+
         /// <summary>
         /// Gets last known GPS state information
         /// </summary>

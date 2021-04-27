@@ -14,7 +14,7 @@ namespace WinchHuntApp.Server.Data
     public class WinchHuntContext : ApiAuthorizationDbContext<ApplicationUser>
     {
 
-
+        
         public WinchHuntContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)

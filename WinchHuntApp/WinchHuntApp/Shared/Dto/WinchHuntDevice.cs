@@ -8,6 +8,12 @@ namespace WinchHuntApp.Shared.Dto
 {
     public class WinchHuntDevice
     {
+
+        public WinchHuntDevice()
+        {
+            Device = new DeviceInfo();
+        }
+
         /// <summary>
         /// Gets Device information
         /// </summary>
