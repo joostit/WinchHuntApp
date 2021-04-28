@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WinchHuntApp.Server.Models;
 using WinchHuntApp.Server.Services;
 
+
 namespace WinchHuntApp.Server.Controllers.Api
 {
     [Route("api/[controller]")]
@@ -19,7 +20,7 @@ namespace WinchHuntApp.Server.Controllers.Api
 
         private readonly IAccessService accessService;
 
-        public UplinkController(IFoxService foxService, 
+        public UplinkController(IFoxService foxService,
             IHunterService hunterService,
             IAccessService accessService)
         {
@@ -29,10 +30,11 @@ namespace WinchHuntApp.Server.Controllers.Api
         }
 
 
-        // POST api/uplink
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UplinkPost postBody)
         {
+            Console.WriteLine("In: public async Task<IActionResult> Post([FromBody] UplinkPost postBody)");
             if (postBody == null) return BadRequest();
 
             if (postBody.AccessToken == null)
@@ -50,7 +52,6 @@ namespace WinchHuntApp.Server.Controllers.Api
                 return StatusCode(403, "Invalid API Access Token");
             }
 
-
             if (postBody.Hunter != null)
             {
                 await hunterService.SetHunter(postBody.Hunter);
@@ -59,7 +60,7 @@ namespace WinchHuntApp.Server.Controllers.Api
             await foxService.ProcessFoxUpdateAsync(postBody);
 
             return Ok();
-        }
 
+        }
     }
 }
