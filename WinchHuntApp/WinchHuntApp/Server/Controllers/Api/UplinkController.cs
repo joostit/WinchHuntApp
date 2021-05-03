@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,17 @@ namespace WinchHuntApp.Server.Controllers.Api
 
         private readonly IAccessService accessService;
 
+        private readonly ILogger<UplinkController> logger;
+
         public UplinkController(IFoxService foxService,
             IHunterService hunterService,
-            IAccessService accessService)
+            IAccessService accessService,
+            ILogger<UplinkController> logger)
         {
             this.foxService = foxService;
             this.hunterService = hunterService;
             this.accessService = accessService;
+            this.logger = logger;
         }
 
 
@@ -34,30 +39,32 @@ namespace WinchHuntApp.Server.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UplinkPost postBody)
         {
-            Console.WriteLine("In: public async Task<IActionResult> Post([FromBody] UplinkPost postBody)");
-            if (postBody == null) return BadRequest();
+            logger.LogWarning("Inside Post");
 
-            if (postBody.AccessToken == null)
-            {
-                return Unauthorized();
-            }
 
-            if (postBody.Devices == null)
-            {
-                return BadRequest();
-            }
+            //if (postBody == null) return BadRequest();
 
-            if (!accessService.IsUplinkAllowed(postBody.AccessToken))
-            {
-                return StatusCode(403, "Invalid API Access Token");
-            }
+            //if (postBody.AccessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
 
-            if (postBody.Hunter != null)
-            {
-                await hunterService.SetHunter(postBody.Hunter);
-            }
+            //if (postBody.Devices == null)
+            //{
+            //    return BadRequest();
+            //}
 
-            await foxService.ProcessFoxUpdateAsync(postBody);
+            //if (!accessService.IsUplinkAllowed(postBody.AccessToken))
+            //{
+            //    return StatusCode(403, "Invalid API Access Token");
+            //}
+
+            //if (postBody.Hunter != null)
+            //{
+            //    await hunterService.SetHunter(postBody.Hunter);
+            //}
+
+            //await foxService.ProcessFoxUpdateAsync(postBody);
 
             return Ok();
 
