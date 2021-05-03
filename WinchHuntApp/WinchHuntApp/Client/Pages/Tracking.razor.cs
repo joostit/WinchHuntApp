@@ -12,6 +12,11 @@ namespace WinchHuntApp.Client.Pages
     public partial class Tracking : ComponentBase, IDisposable
     {
 
+
+        private const string targetFresh = "/img/target-1.svg";
+        private const string targetMedium = "/img/target-2.svg";
+        private const string targetOld = "/img/target-3.svg";
+
         private ElementReference mapDiv;
         private GoogleMap map;
         private MapOptions mapOptions;
@@ -111,10 +116,53 @@ namespace WinchHuntApp.Client.Pages
                 {
                     existing.Fox = updateFox;
                     await existing.Marker.SetPosition(new LatLngLiteral(updateFox.Gps.Longitude, updateFox.Gps.Latitude));
+                    await existing.Marker.SetIcon(CreateFoxIcon(updateFox.LastUpdate));
                 }
             }
 
         }
+
+
+        private async Task<FoxMarker> CreateFoxMarker(WinchFox fox)
+        {
+            MarkerOptions options = new MarkerOptions()
+            {
+                Position = new LatLngLiteral(fox.Gps.Longitude, fox.Gps.Latitude),
+                Map = map.InteropObject,
+                Icon = CreateFoxIcon(fox.LastUpdate)
+            };
+
+            FoxMarker marker = new();
+            marker.Marker = await Marker.CreateAsync(map.JsRuntime, options);
+            marker.Fox = fox;
+            return marker;
+        }
+
+
+
+        private Icon CreateFoxIcon(DateTime lastUpdate)
+        {
+            return new Icon()
+            {
+                Url = getMarkerImage(lastUpdate),
+                Anchor = new Point()
+                {
+                    X = 13,
+                    Y = 13
+                },
+                Size = new Size()
+                {
+                    Width = 32,
+                    Height = 32
+                },
+                ScaledSize = new Size()
+                {
+                    Width = 26,
+                    Height = 26
+                }
+            };
+        }
+
 
 
         private void InitMap()
@@ -186,6 +234,28 @@ namespace WinchHuntApp.Client.Pages
         }
 
 
+        private string getMarkerImage(DateTime lastUpdate)
+        {
+            double ageM = (DateTime.UtcNow - lastUpdate).TotalMinutes;
+
+            if(ageM < 1)
+            {
+                return targetFresh;
+            }
+            else
+            {
+                if(ageM < 30)
+                {
+                    return targetMedium;
+                }
+                else
+                {
+                    return targetOld;
+                }
+            }
+        }
+
+
         private async Task CreateLocationMarker(double lat, double lon)
         {
             MarkerOptions options = new MarkerOptions()
@@ -217,40 +287,7 @@ namespace WinchHuntApp.Client.Pages
         }
 
 
-        private async Task<FoxMarker> CreateFoxMarker(WinchFox fox)
-        {
-            MarkerOptions options = new MarkerOptions()
-            {
-                Position = new LatLngLiteral(fox.Gps.Longitude, fox.Gps.Latitude),
-                Map = map.InteropObject,
-                Icon = new Icon()
-                {
-                    Url = "/img/target.svg",
-                    Anchor = new Point()
-                    {
-                        X = 13,
-                        Y = 13
-                    },
-                    Size = new Size()
-                    {
-                        Width = 32,
-                        Height = 32
-                    },
-                    ScaledSize = new Size()
-                    {
-                        Width = 26,
-                        Height = 26
-                    }
-                }
-            };
-
-            FoxMarker marker = new();
-            marker.Marker = await Marker.CreateAsync(map.JsRuntime, options);
-            marker.Fox = fox;
-            return marker;
-        }
-
-
+        
         private async Task CreateAccuracyCircle(double lat, double lon, double accuracy)
         {
             accuracyCircle = await Circle.CreateAsync(map.JsRuntime, new CircleOptions()
