@@ -14,7 +14,7 @@ namespace WinchHuntApp.Server.Data
 
         public DbSet<DbFox> Foxes { get; set; }
 
-        public List<DbHunter> Hunters { get; set; }
+        public DbSet<DbHunter> Hunters { get; set; }
 
     }
 }

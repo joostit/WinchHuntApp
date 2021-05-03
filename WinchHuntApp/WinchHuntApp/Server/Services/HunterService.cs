@@ -40,29 +40,29 @@ namespace WinchHuntApp.Server.Services
 
         public async Task SetHunter(WinchHunter hunter)
         {
-            //DbHunter dbHunter;
+            DbHunter dbHunter;
 
-            //// Just a safeguard in case of inconsistencies. There can be only one ;)
-            //if (inMemoryDb.Hunters.Count() > 1)
-            //{
-            //    List<DbHunter> toRemove = inMemoryDb.Hunters.ToList();
+            // Just a safeguard in case of inconsistencies. There can be only one ;)
+            if (inMemoryDb.Hunters.Count() > 1)
+            {
+                List<DbHunter> toRemove = inMemoryDb.Hunters.ToList();
 
-            //    toRemove.ForEach(h => inMemoryDb.Hunters.Remove(h));
-            //}
+                toRemove.ForEach(h => inMemoryDb.Hunters.Remove(h));
+            }
 
-            //if (inMemoryDb.Hunters.Count() == 0)
-            //{
-            //    dbHunter = new DbHunter();
-            //    UpdateHunter(dbHunter, hunter);
-            //    inMemoryDb.Hunters.Add(dbHunter);
-            //}
-            //else
-            //{
-            //    dbHunter = inMemoryDb.Hunters.First();
-            //    UpdateHunter(dbHunter, hunter);
-            //}
+            if (inMemoryDb.Hunters.Count() == 0)
+            {
+                dbHunter = new DbHunter();
+                UpdateHunter(dbHunter, hunter);
+                inMemoryDb.Hunters.Add(dbHunter);
+            }
+            else
+            {
+                dbHunter = inMemoryDb.Hunters.First();
+                UpdateHunter(dbHunter, hunter);
+            }
 
-            //await inMemoryDb.SaveChangesAsync();
+            await inMemoryDb.SaveChangesAsync();
         }
 
 
