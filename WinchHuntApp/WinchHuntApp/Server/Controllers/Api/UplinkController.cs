@@ -76,15 +76,15 @@ namespace WinchHuntApp.Server.Controllers.Api
             //    }
             //}
 
-            //try
-            //{
-            //    await foxService.ProcessFoxUpdateAsync(postBody);
-            //}
-            //catch (AggregateException e)
-            //{
-            //    logger.LogWarning($"Exception while processing foxes uplink data $'{e.Flatten().ToString()}'");
-            //    return BadRequest("Error while processing foxes data");
-            //}
+            try
+            {
+                await foxService.ProcessFoxUpdateAsync(postBody);
+            }
+            catch (AggregateException e)
+            {
+                logger.LogWarning($"Exception while processing foxes uplink data $'{e.Flatten().ToString()}'");
+                return BadRequest("Error while processing foxes data");
+            }
 
             //logger.LogInformation($"Processes uplink post from {Request.HttpContext.Connection.RemoteIpAddress}. Foxes: {postBody.Devices.Count}");
 
