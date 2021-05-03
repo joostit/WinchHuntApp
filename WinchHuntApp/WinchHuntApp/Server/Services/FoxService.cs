@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WinchHuntApp.Server.Data;
 using WinchHuntApp.Server.Data.Db;
 using WinchHuntApp.Server.Models;
+using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Server.Services
@@ -64,7 +65,7 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-        public async Task ProcessFoxUpdateAsync(UplinkPost post)
+        public async Task ProcessFoxUpdateAsync(DbSite site, UplinkPost post)
         {
 
             List<DbFox> foxesToRemove = new List<DbFox>();

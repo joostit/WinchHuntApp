@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Models.Db;
-using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Server.Services
 {
-    public interface IHunterService
+    public interface IUplinkAccessService
     {
-
-        Task SetHunter(DbSite site, WinchHunter hunter);
-
-        Task<HunterDto> GetHunter();
+        Task<DbSite> GetUplinkSite(string apiToken);
     }
 }

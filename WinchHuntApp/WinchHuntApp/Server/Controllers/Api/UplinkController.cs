@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Models;
+using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Server.Services;
 
 
@@ -15,40 +16,27 @@ namespace WinchHuntApp.Server.Controllers.Api
     public class UplinkController : ControllerBase
     {
 
-        private readonly IFoxService foxService;
-
-        private readonly IHunterService hunterService;
-
-        private readonly IAccessService accessService;
+        private const string uplinkAccessTokenName = "uplink-access-token";
 
         private readonly ILogger<UplinkController> logger;
+        private IUplinkService uplinkService;
 
-        public UplinkController(IFoxService foxService,
-            IHunterService hunterService,
-            IAccessService accessService,
-            ILogger<UplinkController> logger)
+        public UplinkController(ILogger<UplinkController> logger, IUplinkService uplinkService)
         {
-            this.foxService = foxService;
-            this.hunterService = hunterService;
-            this.accessService = accessService;
             this.logger = logger;
+            this.uplinkService = uplinkService;
         }
-
 
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UplinkPost postBody)
         {
+            string accessToken = null;
+
             if (postBody == null)
             {
                 logger.LogWarning("Empty uplink body received");
                 return BadRequest("Uplink post body is required");
-            }
-
-            if (postBody.AccessToken == null)
-            {
-                logger.LogWarning("null Access token received");
-                return Unauthorized("No access token provided");
             }
 
             if (postBody.Devices == null)
@@ -57,34 +45,29 @@ namespace WinchHuntApp.Server.Controllers.Api
                 return BadRequest("The Devices properties should not be null");
             }
 
-            if (!accessService.IsUplinkAllowed(postBody.AccessToken))
-            {
-                logger.LogWarning($"Uplink post with invaid access token received $'{postBody.AccessToken}'");
-                return StatusCode(403, "Invalid API Access Token");
-            }
 
-            if (postBody.Hunter != null)
+            if (Request.Headers.ContainsKey(uplinkAccessTokenName))
             {
-                try
+                accessToken = Request.Headers[uplinkAccessTokenName];
+                if (String.IsNullOrWhiteSpace(accessToken))
                 {
-                    await hunterService.SetHunter(postBody.Hunter);
+                    return Unauthorized("No access token header provided");
                 }
-                catch (AggregateException e)
-                {
-                    logger.LogWarning($"Exception while processing hunter uplink data $'{e.Flatten().ToString()}'");
-                    return BadRequest("Invalid Hunter data");
-                }
+            }
+            else
+            {
+                return Unauthorized("No access token header provided");
             }
 
             try
             {
-                await foxService.ProcessFoxUpdateAsync(postBody);
+                await uplinkService.ProcessUplinkPost(accessToken, postBody);
             }
-            catch (AggregateException e)
+            catch(AggregateException ex)
             {
-                logger.LogWarning($"Exception while processing foxes uplink data $'{e.Flatten().ToString()}'");
-                return BadRequest("Error while processing foxes data");
+                return new BadRequestObjectResult($"Could not process uplink post: {ex.Flatten()}");
             }
+
 
             logger.LogInformation($"Processes uplink post from {Request.HttpContext.Connection.RemoteIpAddress}. Foxes: {postBody.Devices.Count}");
 

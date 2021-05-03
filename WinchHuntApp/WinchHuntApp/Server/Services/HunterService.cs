@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Data;
 using WinchHuntApp.Server.Data.Db;
+using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Server.Services
@@ -38,7 +39,7 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-        public async Task SetHunter(WinchHunter hunter)
+        public async Task SetHunter(DbSite site, WinchHunter hunter)
         {
             DbHunter dbHunter;
 

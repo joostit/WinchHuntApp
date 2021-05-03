@@ -8,9 +8,6 @@ namespace WinchHuntApp.Server.Models
 {
     public class UplinkPost
     {
-
-        public string AccessToken { get; set; } = "";
-
         public List<WinchFox> Devices { get; set; } = new List<WinchFox>();
 
         /// <summary>
