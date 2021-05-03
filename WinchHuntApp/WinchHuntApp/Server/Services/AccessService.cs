@@ -13,15 +13,13 @@ namespace WinchHuntApp.Server.Services
 
         public AccessService(IConfiguration configuration)
         {
-            //apiAccessToken = configuration["Configuration:ApiToken"];
+            apiAccessToken = configuration["Configuration:ApiToken"];
         }
 
 
         public bool IsUplinkAllowed(string apiTokenToTest)
         {
-            return true;
-            //return String.Equals(apiAccessToken, apiTokenToTest);
-
+            return String.Equals(apiAccessToken, apiTokenToTest);
         }
     }
 }
