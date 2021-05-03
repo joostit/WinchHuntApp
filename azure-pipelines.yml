@@ -24,12 +24,15 @@ steps:
     arguments: '$(Build.BuildNumber)'
 
 - task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
 
 - task: NuGetCommand@2
+  displayName: 'Restore NuGet packages'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: 'Build'
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
@@ -37,6 +40,7 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: 'Run tests'
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
@@ -46,14 +50,16 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
 
 - task: DotNetCoreCLI@2
-  displayName: Publish
+  displayName: 'Publish projects'
   inputs:
     command: 'publish'
     publishWebProjects: false
     projects: '**/$(appName).Server.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --no-restore --no-build'
+
     
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifacts'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
