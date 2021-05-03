@@ -11,7 +11,7 @@
 	});
 
 	//console.log("Injecting Google Maps API script to <head>");
-	let src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&v=3";
+	let src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey;
 
 	let importedMaps = document.createElement('script');
 	importedMaps.src = src;
