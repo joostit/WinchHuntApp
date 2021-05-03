@@ -63,30 +63,30 @@ namespace WinchHuntApp.Server.Controllers.Api
                 return StatusCode(403, "Invalid API Access Token");
             }
 
-            if (postBody.Hunter != null)
-            {
-                try
-                {
-                    await hunterService.SetHunter(postBody.Hunter);
-                }
-                catch (AggregateException e)
-                {
-                    logger.LogWarning($"Exception while processing hunter uplink data $'{e.Flatten().ToString()}'");
-                    return BadRequest("Invalid Hunter data");
-                }
-            }
+            //if (postBody.Hunter != null)
+            //{
+            //    try
+            //    {
+            //        await hunterService.SetHunter(postBody.Hunter);
+            //    }
+            //    catch (AggregateException e)
+            //    {
+            //        logger.LogWarning($"Exception while processing hunter uplink data $'{e.Flatten().ToString()}'");
+            //        return BadRequest("Invalid Hunter data");
+            //    }
+            //}
 
-            try
-            {
-                await foxService.ProcessFoxUpdateAsync(postBody);
-            }
-            catch (AggregateException e)
-            {
-                logger.LogWarning($"Exception while processing foxes uplink data $'{e.Flatten().ToString()}'");
-                return BadRequest("Error while processing foxes data");
-            }
+            //try
+            //{
+            //    await foxService.ProcessFoxUpdateAsync(postBody);
+            //}
+            //catch (AggregateException e)
+            //{
+            //    logger.LogWarning($"Exception while processing foxes uplink data $'{e.Flatten().ToString()}'");
+            //    return BadRequest("Error while processing foxes data");
+            //}
 
-            logger.LogInformation($"Processes uplink post from {Request.HttpContext.Connection.RemoteIpAddress}. Foxes: {postBody.Devices.Count}");
+            //logger.LogInformation($"Processes uplink post from {Request.HttpContext.Connection.RemoteIpAddress}. Foxes: {postBody.Devices.Count}");
 
             return Ok();
 
