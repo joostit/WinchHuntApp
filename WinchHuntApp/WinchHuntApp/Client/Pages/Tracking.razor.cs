@@ -12,10 +12,9 @@ namespace WinchHuntApp.Client.Pages
     public partial class Tracking : ComponentBase, IDisposable
     {
 
-
-        private const string targetFresh = "/img/target-1.svg";
-        private const string targetMedium = "/img/target-2.svg";
-        private const string targetOld = "/img/target-3.svg";
+        private const string targetSelected = "/img/target-green.svg";
+        private const string targetFresh = "/img/target-yellow.svg";
+        private const string targetOld = "/img/target-red.svg";
 
         private ElementReference mapDiv;
         private GoogleMap map;
@@ -238,20 +237,13 @@ namespace WinchHuntApp.Client.Pages
         {
             double ageM = (DateTime.UtcNow - lastUpdate).TotalMinutes;
 
-            if(ageM < 1)
+            if(ageM < 30)
             {
                 return targetFresh;
             }
             else
             {
-                if(ageM < 30)
-                {
-                    return targetMedium;
-                }
-                else
-                {
-                    return targetOld;
-                }
+                return targetOld;
             }
         }
 
