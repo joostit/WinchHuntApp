@@ -12,6 +12,9 @@ namespace WinchHuntApp.Client.Pages
     public partial class Tracking : ComponentBase, IDisposable
     {
 
+        [Parameter]
+        public string SiteId { get; set; }
+
         private const string targetSelected = "/img/target-green.svg";
         private const string targetFresh = "/img/target-yellow.svg";
         private const string targetOld = "/img/target-red.svg";

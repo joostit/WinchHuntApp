@@ -11,6 +11,19 @@
 @using GoogleMapsComponents.Maps
 
 @page "/tracking"
+@page "/tracking/{SiteId}"
+
+<div>
+
+
+    @if (!string.IsNullOrEmpty(SiteId))
+    {
+        <h1>
+            Site ID: @SiteId
+        </h1>
+    }
+
+</div>
 
 <div ref="mapDiv"
      id="mapDivId"
