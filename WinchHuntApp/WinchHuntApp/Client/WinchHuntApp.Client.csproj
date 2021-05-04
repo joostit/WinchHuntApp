@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\img\winchhunt.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\img\winchhunt.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BlazorGoogleMaps" Version="1.0.14" />
     <PackageReference Include="BrowserInterop" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.5" />
