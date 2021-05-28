@@ -14,10 +14,10 @@ namespace WinchHuntApp.Server.Services
     {
 
         
-        private readonly WinchHuntContext dbContext;
+        private readonly WinchHuntDbContext dbContext;
         private InMemoryDbContext inMemoryDb;
 
-        public HunterService(WinchHuntContext ctx, InMemoryDbContext inMemoryDb)
+        public HunterService(WinchHuntDbContext ctx, InMemoryDbContext inMemoryDb)
         {
             dbContext = ctx;
             this.inMemoryDb = inMemoryDb;

@@ -29,7 +29,7 @@ namespace WinchHuntApp.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WinchHuntContext>(options =>
+            services.AddDbContext<WinchHuntDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
@@ -39,10 +39,10 @@ namespace WinchHuntApp.Server
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<WinchHuntContext>();
+                .AddEntityFrameworkStores<WinchHuntDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, WinchHuntContext>();
+                .AddApiAuthorization<ApplicationUser, WinchHuntDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
@@ -59,7 +59,7 @@ namespace WinchHuntApp.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WinchHuntContext dataContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WinchHuntDbContext dataContext)
         {
             dataContext.Database.Migrate();
 

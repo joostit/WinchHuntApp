@@ -11,11 +11,11 @@ using WinchHuntApp.Server.Models;
 
 namespace WinchHuntApp.Server.Data
 {
-    public class WinchHuntContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class WinchHuntDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
 
         
-        public WinchHuntContext(
+        public WinchHuntDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {

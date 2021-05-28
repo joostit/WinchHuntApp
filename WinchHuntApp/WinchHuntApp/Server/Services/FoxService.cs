@@ -18,9 +18,9 @@ namespace WinchHuntApp.Server.Services
 
 
         private readonly InMemoryDbContext inMemoryDb;
-        private readonly WinchHuntContext dbContext;
+        private readonly WinchHuntDbContext dbContext;
 
-        public FoxService(WinchHuntContext ctx, InMemoryDbContext inMemoryDb)
+        public FoxService(WinchHuntDbContext ctx, InMemoryDbContext inMemoryDb)
         {
             dbContext = ctx;
             this.inMemoryDb = inMemoryDb;
