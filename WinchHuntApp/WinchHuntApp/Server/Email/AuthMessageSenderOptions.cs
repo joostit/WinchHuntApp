@@ -9,5 +9,6 @@ namespace WinchHuntApp.Server.Email
     {
         public string SendGridUser { get; set; }
         public string SendGridKey { get; set; }
+        public string SendGridFromAddress { get; set; }
     }
 }

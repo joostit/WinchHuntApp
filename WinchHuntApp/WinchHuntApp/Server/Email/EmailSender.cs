@@ -20,7 +20,8 @@ namespace WinchHuntApp.Server.Email
             Options = new AuthMessageSenderOptions()
             {
                 SendGridUser = "WinchHunt",
-                SendGridKey = optionsAccessor.GetValue<string>("SendGridKey")
+                SendGridKey = optionsAccessor.GetValue<string>("SendGridKey"),
+                SendGridFromAddress = optionsAccessor.GetValue<string>("SendGridFromAddress")
             };
         }
 
@@ -35,7 +36,7 @@ namespace WinchHuntApp.Server.Email
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("dev@joostit.com", Options.SendGridUser),
+                From = new EmailAddress(Options.SendGridFromAddress, Options.SendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
