@@ -20,10 +20,17 @@ namespace WinchHuntApp.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
 
-
-
-
-
         }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            UserDataSeeder userSeeder = new UserDataSeeder();
+            userSeeder.Seed(builder);
+        }
+
+
     }
 }
+ 
