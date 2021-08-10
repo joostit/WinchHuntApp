@@ -19,7 +19,7 @@ namespace WinchHuntApp.Client.Pages
         private const string targetFresh = "/img/target-yellow.svg";
         private const string targetOld = "/img/target-red.svg";
 
-        private ElementReference mapDiv;
+        //private ElementReference mapDiv;
         private GoogleMap map;
         private MapOptions mapOptions;
         private Circle accuracyCircle;
