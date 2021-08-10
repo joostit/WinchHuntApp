@@ -15,7 +15,7 @@ namespace WinchHuntApp.Server.Data
         private string adminRoleId = "3181998d-0b28-490d-9619-ca3f35d0cf83";
         private string siteAdminRoleId = "0ecc57b3-7919-46ff-a8cd-f40df6fdccbf";
         private string loggedInUserRoleId = "552fba04-f975-4329-ac6c-0e744e25abeb";
-
+               
 
         public void Seed(ModelBuilder builder)
         {
@@ -34,6 +34,7 @@ namespace WinchHuntApp.Server.Data
                 UserName = "admin",
                 Email = "admin@winchhunt.net",
                 NormalizedUserName = "admin@winchhunt.net",
+                NormalizedEmail = "admin@winchhunt.net",
                 LockoutEnabled = false,
                 PhoneNumber = "",
                 EmailConfirmed = true,

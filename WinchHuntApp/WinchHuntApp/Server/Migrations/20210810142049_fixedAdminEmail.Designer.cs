@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WinchHuntApp.Server.Data;
 
 namespace WinchHuntApp.Server.Migrations
 {
     [DbContext(typeof(WinchHuntDbContext))]
-    partial class WinchHuntDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210810142049_fixedAdminEmail")]
+    partial class fixedAdminEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
