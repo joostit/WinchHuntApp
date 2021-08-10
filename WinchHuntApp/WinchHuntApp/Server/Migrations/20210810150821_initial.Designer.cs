@@ -10,8 +10,8 @@ using WinchHuntApp.Server.Data;
 namespace WinchHuntApp.Server.Migrations
 {
     [DbContext(typeof(WinchHuntDbContext))]
-    [Migration("20210810142049_fixedAdminEmail")]
-    partial class fixedAdminEmail
+    [Migration("20210810150821_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -358,18 +358,18 @@ namespace WinchHuntApp.Server.Migrations
                         {
                             Id = "bec81c59-b51e-4ef0-9516-6950963880f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1b4549fb-0981-40db-93e4-d4c597b90f74",
+                            ConcurrencyStamp = "db64cb2c-acc7-49da-a742-6d1025096db4",
                             Email = "admin@winchhunt.net",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "admin@winchhunt.net",
-                            NormalizedUserName = "admin@winchhunt.net",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJPHe759t7IVg2PIH560AC6kXFwUe/C6pMVduakGtLdffLHBlyKppRaaqc25bLH2rQ==",
+                            NormalizedEmail = "ADMIN@WINCHHUNT.NET",
+                            NormalizedUserName = "ADMIN@WINCHHUNT.NET",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOyiJDoit4Ma7Mwb8DgeF2LuA+fn7oY5/Wp5kYBBraeiqFjlgrmbkHofeU25c+RJow==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bf918999-f152-493c-843a-7ccaa37e6ca4",
+                            SecurityStamp = "ffd2f775-42e6-44af-8e64-24b2c2ced774",
                             TwoFactorEnabled = false,
-                            UserName = "admin"
+                            UserName = "admin@winchhunt.net"
                         });
                 });
 

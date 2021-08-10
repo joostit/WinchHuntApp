@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WinchHuntApp.Server.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -190,6 +190,26 @@ namespace WinchHuntApp.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "3181998d-0b28-490d-9619-ca3f35d0cf83", "1", "Admin", "Admin" },
+                    { "0ecc57b3-7919-46ff-a8cd-f40df6fdccbf", "2", "SiteManager", "Site Manager" },
+                    { "552fba04-f975-4329-ac6c-0e744e25abeb", "3", "LoggedInUser", "Logged In User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "bec81c59-b51e-4ef0-9516-6950963880f5", 0, "db64cb2c-acc7-49da-a742-6d1025096db4", "admin@winchhunt.net", true, false, null, "ADMIN@WINCHHUNT.NET", "ADMIN@WINCHHUNT.NET", "AQAAAAEAACcQAAAAEOyiJDoit4Ma7Mwb8DgeF2LuA+fn7oY5/Wp5kYBBraeiqFjlgrmbkHofeU25c+RJow==", "", false, "ffd2f775-42e6-44af-8e64-24b2c2ced774", false, "admin@winchhunt.net" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "3181998d-0b28-490d-9619-ca3f35d0cf83", "bec81c59-b51e-4ef0-9516-6950963880f5" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

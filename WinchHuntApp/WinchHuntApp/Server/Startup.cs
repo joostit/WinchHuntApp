@@ -12,7 +12,9 @@ using WinchHuntApp.Server.Data;
 using WinchHuntApp.Server.Models;
 using Majorsoft.Blazor.Components.Maps;
 using WinchHuntApp.Server.Services;
-
+using Microsoft.AspNetCore.Identity.UI.Services;
+using WinchHuntApp.Server.Email;
+using Microsoft.AspNetCore.Identity;
 
 namespace WinchHuntApp.Server
 {
@@ -49,6 +51,10 @@ namespace WinchHuntApp.Server
 
             services.AddMapExtensions();
 
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -56,6 +62,7 @@ namespace WinchHuntApp.Server
             services.AddScoped<IUplinkAccessService, UplinkAccessService>();
             services.AddScoped<IHunterService, HunterService>();
             services.AddScoped<IUplinkService, UplinkService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +99,39 @@ namespace WinchHuntApp.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+
+
+            //CreateDevUser(app);
+        }
+
+        private static void CreateDevUser(IApplicationBuilder app)
+        {
+            // Create a temporary test user
+            var scope = app.ApplicationServices.CreateScope();
+            WinchHuntDbContext db = scope.ServiceProvider.GetService<WinchHuntDbContext>();
+
+            string email = "";
+
+            if (db.Users.Where(u => u.Id == "1e088930-bc68-421f-9528-7fd60fceef55").Count() < 1)
+            {
+                ApplicationUser devUser = new ApplicationUser()
+                {
+                    Id = "1e088930-bc68-421f-9528-7fd60fceef55",
+                    UserName = email,
+                    Email = email,
+                    NormalizedUserName = email.ToUpper(),
+                    NormalizedEmail = email.ToUpper(),
+                    LockoutEnabled = false,
+                    PhoneNumber = "123",
+                    EmailConfirmed = true,
+                };
+
+                PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+                devUser.PasswordHash = passwordHasher.HashPassword(devUser, "123Dev!");
+
+                db.Users.Add(devUser);
+                db.SaveChanges();
+            }
         }
     }
 }

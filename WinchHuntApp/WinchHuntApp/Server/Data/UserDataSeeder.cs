@@ -31,10 +31,10 @@ namespace WinchHuntApp.Server.Data
             ApplicationUser user = new ApplicationUser()
             {
                 Id = adminUserId,
-                UserName = "admin",
+                UserName = "admin@winchhunt.net",
                 Email = "admin@winchhunt.net",
-                NormalizedUserName = "admin@winchhunt.net",
-                NormalizedEmail = "admin@winchhunt.net",
+                NormalizedUserName = "ADMIN@WINCHHUNT.NET",
+                NormalizedEmail = "ADMIN@WINCHHUNT.NET",
                 LockoutEnabled = false,
                 PhoneNumber = "",
                 EmailConfirmed = true,
