@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WinchHuntApp.Client.Utils;
+using WinchHuntApp.Shared.Constants;
 
 namespace WinchHuntApp.Client.Services
 {
@@ -43,7 +44,7 @@ namespace WinchHuntApp.Client.Services
         {
             GetRequest request = new GetRequest(http.Client, getMapsKeyUrl);
 
-            request.Headers.Add("key-request-token", "!IReallyWantIt!");
+            request.Headers.Add(GoogleMaps.KeyRequestHeaderName, GoogleMaps.KeyRequestHeaderValue);
 
             return await request.Get<string>();
         }

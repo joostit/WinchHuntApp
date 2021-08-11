@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace WinchHuntApp.Client.Utils
 
             var response = await client.SendAsync(request);
             var responseBytes = await response.Content.ReadAsByteArrayAsync();
-
+            string responseString = ASCIIEncoding.UTF8.GetString(responseBytes);
             TResponseBody result = JsonSerializer.Deserialize<TResponseBody>(responseBytes,
                 new JsonSerializerOptions
                 {

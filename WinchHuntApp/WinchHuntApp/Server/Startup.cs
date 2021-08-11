@@ -75,6 +75,7 @@ namespace WinchHuntApp.Server
             services.AddScoped<IUplinkAccessService, UplinkAccessService>();
             services.AddScoped<IHunterService, HunterService>();
             services.AddScoped<IUplinkService, UplinkService>();
+            services.AddScoped<IAccountService, AccountService>();
 
         }
 
