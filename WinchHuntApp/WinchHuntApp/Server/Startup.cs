@@ -40,11 +40,24 @@ namespace WinchHuntApp.Server
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // Enable identity roles
+
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<WinchHuntDbContext>();
 
+            // Configure identity server to put the role claim into the id token
+            // and the access token and prevent the default mapping for roles 
+            // in the JwtSecurityTokenHandler.
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, WinchHuntDbContext>();
+                .AddApiAuthorization<ApplicationUser, WinchHuntDbContext>(options => {
+                    options.IdentityResources["openid"].UserClaims.Add("role");
+                    options.ApiResources.Single().UserClaims.Add("role");
+                });
+
+            // Need to do this as it maps "role" to ClaimTypes.Role and causes issues
+            System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler
+                .DefaultInboundClaimTypeMap.Remove("role");
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

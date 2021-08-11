@@ -10,8 +10,8 @@ using WinchHuntApp.Server.Data;
 namespace WinchHuntApp.Server.Migrations
 {
     [DbContext(typeof(WinchHuntDbContext))]
-    [Migration("20210810150821_initial")]
-    partial class initial
+    [Migration("20210811085223_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,21 +156,21 @@ namespace WinchHuntApp.Server.Migrations
                             Id = "3181998d-0b28-490d-9619-ca3f35d0cf83",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
-                            NormalizedName = "Admin"
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "0ecc57b3-7919-46ff-a8cd-f40df6fdccbf",
                             ConcurrencyStamp = "2",
                             Name = "SiteManager",
-                            NormalizedName = "Site Manager"
+                            NormalizedName = "SITEMANAGER"
                         },
                         new
                         {
                             Id = "552fba04-f975-4329-ac6c-0e744e25abeb",
                             ConcurrencyStamp = "3",
                             Name = "LoggedInUser",
-                            NormalizedName = "Logged In User"
+                            NormalizedName = "LOGGEDINUSER"
                         });
                 });
 
@@ -358,16 +358,16 @@ namespace WinchHuntApp.Server.Migrations
                         {
                             Id = "bec81c59-b51e-4ef0-9516-6950963880f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "db64cb2c-acc7-49da-a742-6d1025096db4",
+                            ConcurrencyStamp = "0f84fd0f-0426-4eaa-a8bb-e41a21acfebe",
                             Email = "admin@winchhunt.net",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@WINCHHUNT.NET",
                             NormalizedUserName = "ADMIN@WINCHHUNT.NET",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOyiJDoit4Ma7Mwb8DgeF2LuA+fn7oY5/Wp5kYBBraeiqFjlgrmbkHofeU25c+RJow==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI1j/l/KxnRteg2iFZtzXUeDLkPyuYDrYN4FWlGINMdepuSjUcPtN42jEkTzPY36bg==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ffd2f775-42e6-44af-8e64-24b2c2ced774",
+                            SecurityStamp = "ac50682c-c2a4-4e01-b954-23abd81224a7",
                             TwoFactorEnabled = false,
                             UserName = "admin@winchhunt.net"
                         });
