@@ -1,7 +1,29 @@
 ﻿@page "/manageusers"
-@using WinchHuntApp.Client.Components; 
+@using WinchHuntApp.Client.Components;
+@using WinchHuntApp.Client.Utils;
 
-<UserList/>
+<UserList />
 
-@{
+<button @onclick="e => IsModalOpened = true">Open modal</button>
+
+<Modal @bind-Open="IsModalOpened" Close="OnClose">
+    <form method="dialog">
+        <p>
+            Do you really want to do this?
+        </p>
+        <menu>
+            <button value="cancel">Cancel</button>
+            <button value="confirm">I'm sure</button>
+        </menu>
+    </form>
+</Modal>
+
+@code{
+    public bool IsModalOpened { get; set; }
+    public string SelectedButton { get; set; }
+
+    void OnClose(string value)
+    {
+        SelectedButton = value;
+    }
 }
