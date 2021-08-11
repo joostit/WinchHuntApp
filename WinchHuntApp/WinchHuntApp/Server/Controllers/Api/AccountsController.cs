@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Services;
+using WinchHuntApp.Shared.Dto;
 using WinchHuntApp.Shared.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -33,29 +34,14 @@ namespace WinchHuntApp.Server.Controllers
             return await accountService.GetUsers();
         }
 
-        // GET api/<Users>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/<Users>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("invitenew")]
+        public async Task<ResultInfo> InviteNew([FromBody] NewUser newUser)
         {
-        }
+            var baseUrl = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Url.Content("~"));
 
-        // PUT api/<Users>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+            return await accountService.InviteNew(newUser, baseUrl);
 
-        // DELETE api/<Users>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

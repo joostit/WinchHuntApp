@@ -4,18 +4,10 @@
 
 <UserList />
 
-<button @onclick="e => IsModalOpened = true">Open modal</button>
+<button @onclick="e => IsModalOpened = true">Invite user</button>
 
 <Modal @bind-Open="IsModalOpened" Close="OnClose">
-    <form method="dialog">
-        <p>
-            Do you really want to do this?
-        </p>
-        <menu>
-            <button value="cancel">Cancel</button>
-            <button value="confirm">I'm sure</button>
-        </menu>
-    </form>
+    <NewUserForm/>
 </Modal>
 
 @code{
