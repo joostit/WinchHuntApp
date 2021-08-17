@@ -43,8 +43,6 @@ namespace WinchHuntApp.Server.Data
             {
                 Id = demoSiteId,
                 Name = "DemoSite",
-                //Hunters = new List<DbHunter>(),
-                //Foxes = new List<DbFox>()
             };
 
             builder.Entity<DbSite>().HasData(demoSite);
