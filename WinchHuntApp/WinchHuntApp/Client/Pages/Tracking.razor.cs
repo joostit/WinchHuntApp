@@ -32,11 +32,8 @@ namespace WinchHuntApp.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await Task.Run(() =>
-            {
-                InitMap();
-                locationService.GeoLocationStateHasChanged += LocationUpdated;
-            });
+            InitMap();
+            locationService.GeoLocationStateHasChanged += LocationUpdated;
         }
 
 
