@@ -10,8 +10,8 @@ using WinchHuntApp.Server.Data;
 namespace WinchHuntApp.Server.Migrations
 {
     [DbContext(typeof(WinchHuntDbContext))]
-    [Migration("20210811085223_Initial")]
-    partial class Initial
+    [Migration("20210817123725_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -289,7 +289,7 @@ namespace WinchHuntApp.Server.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WinchHuntApp.Server.Models.ApplicationUser", b =>
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -358,18 +358,212 @@ namespace WinchHuntApp.Server.Migrations
                         {
                             Id = "bec81c59-b51e-4ef0-9516-6950963880f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f84fd0f-0426-4eaa-a8bb-e41a21acfebe",
+                            ConcurrencyStamp = "faf0202d-36ab-4361-80e7-f584553066c7",
                             Email = "admin@winchhunt.net",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@WINCHHUNT.NET",
                             NormalizedUserName = "ADMIN@WINCHHUNT.NET",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI1j/l/KxnRteg2iFZtzXUeDLkPyuYDrYN4FWlGINMdepuSjUcPtN42jEkTzPY36bg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMQrxPBm7BJ+yeIEm/pwPuK52raXYzZ1WAjum5jBJOEmHTvP7ViquWRtZPB/thJ56A==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ac50682c-c2a4-4e01-b954-23abd81224a7",
+                            SecurityStamp = "3b7456e3-6c0c-43c4-8862-e5491cb7fa9c",
                             TwoFactorEnabled = false,
                             UserName = "admin@winchhunt.net"
+                        });
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.ApplicationUserDbSite", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DbSiteId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ApplicationUserId", "DbSiteId");
+
+                    b.HasIndex("DbSiteId");
+
+                    b.ToTable("UserSites");
+
+                    b.HasData(
+                        new
+                        {
+                            ApplicationUserId = "bec81c59-b51e-4ef0-9516-6950963880f5",
+                            DbSiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        });
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.DbFox", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<double>("LastAltitude")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("LastGpsTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("LastLatitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LastLongitude")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("LastSeen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("LastVelocity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(64)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("SiteId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("Foxes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c3722555-1108-4186-8c47-a52f54ba2360",
+                            DeviceId = "112233",
+                            LastAltitude = 0.0,
+                            LastGpsTimestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastLatitude = 0.0,
+                            LastLongitude = 0.0,
+                            LastSeen = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastVelocity = 0.0,
+                            Name = "FakeFox1",
+                            SiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        },
+                        new
+                        {
+                            Id = "9618a3b6-587b-49da-b898-4a6eb62380db",
+                            DeviceId = "AABBCC",
+                            LastAltitude = 0.0,
+                            LastGpsTimestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastLatitude = 0.0,
+                            LastLongitude = 0.0,
+                            LastSeen = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastVelocity = 0.0,
+                            Name = "FakeFox2",
+                            SiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        },
+                        new
+                        {
+                            Id = "861d666b-0f3c-4a44-b1e5-982dc5dc8a18",
+                            DeviceId = "55EE66",
+                            LastAltitude = 0.0,
+                            LastGpsTimestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastLatitude = 0.0,
+                            LastLongitude = 0.0,
+                            LastSeen = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastVelocity = 0.0,
+                            Name = "FakeFox3",
+                            SiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        },
+                        new
+                        {
+                            Id = "a8fe26a8-ec1e-4b4f-8ccc-6bf122bb8092",
+                            DeviceId = "77FF88",
+                            LastAltitude = 0.0,
+                            LastGpsTimestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastLatitude = 0.0,
+                            LastLongitude = 0.0,
+                            LastSeen = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastVelocity = 0.0,
+                            Name = "FakeFox4",
+                            SiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        },
+                        new
+                        {
+                            Id = "1fb4aeca-dc23-4056-b26c-c6a9a19e5b4f",
+                            DeviceId = "112233",
+                            LastAltitude = 0.0,
+                            LastGpsTimestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastLatitude = 0.0,
+                            LastLongitude = 0.0,
+                            LastSeen = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastVelocity = 0.0,
+                            Name = "CalMarker",
+                            SiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        });
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.DbHunter", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccessToken")
+                        .HasMaxLength(128)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("LastSeen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(64)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("SiteId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("Hunters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6f608305-8590-4c45-ac37-20127f1d1e3a",
+                            AccessToken = "0011DEMO2233",
+                            LastSeen = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "DemoHunter",
+                            SiteId = "1c3180a1-f3f0-42e4-ac72-0310a701d537"
+                        });
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.DbSite", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sites");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1c3180a1-f3f0-42e4-ac72-0310a701d537",
+                            Name = "DemoSite"
                         });
                 });
 
@@ -384,7 +578,7 @@ namespace WinchHuntApp.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("WinchHuntApp.Server.Models.ApplicationUser", null)
+                    b.HasOne("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -393,7 +587,7 @@ namespace WinchHuntApp.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("WinchHuntApp.Server.Models.ApplicationUser", null)
+                    b.HasOne("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,7 +602,7 @@ namespace WinchHuntApp.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WinchHuntApp.Server.Models.ApplicationUser", null)
+                    b.HasOne("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -417,11 +611,64 @@ namespace WinchHuntApp.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("WinchHuntApp.Server.Models.ApplicationUser", null)
+                    b.HasOne("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.ApplicationUserDbSite", b =>
+                {
+                    b.HasOne("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", "User")
+                        .WithMany("Sites")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WinchHuntApp.Server.Models.Db.DbSite", "Site")
+                        .WithMany("Users")
+                        .HasForeignKey("DbSiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Site");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.DbFox", b =>
+                {
+                    b.HasOne("WinchHuntApp.Server.Models.Db.DbSite", "Site")
+                        .WithMany("Foxes")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.DbHunter", b =>
+                {
+                    b.HasOne("WinchHuntApp.Server.Models.Db.DbSite", "Site")
+                        .WithMany("Hunters")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.Accounts.ApplicationUser", b =>
+                {
+                    b.Navigation("Sites");
+                });
+
+            modelBuilder.Entity("WinchHuntApp.Server.Models.Db.DbSite", b =>
+                {
+                    b.Navigation("Foxes");
+
+                    b.Navigation("Hunters");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

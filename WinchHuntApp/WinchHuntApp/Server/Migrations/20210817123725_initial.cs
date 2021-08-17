@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WinchHuntApp.Server.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,6 +83,18 @@ namespace WinchHuntApp.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sites",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sites", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,6 +203,77 @@ namespace WinchHuntApp.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Foxes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeviceId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    LastSeen = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SiteId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LastLatitude = table.Column<double>(type: "float", nullable: false),
+                    LastLongitude = table.Column<double>(type: "float", nullable: false),
+                    LastAltitude = table.Column<double>(type: "float", nullable: false),
+                    LastVelocity = table.Column<double>(type: "float", nullable: false),
+                    LastGpsTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Foxes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Foxes_Sites_SiteId",
+                        column: x => x.SiteId,
+                        principalTable: "Sites",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hunters",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    AccessToken = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    LastSeen = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SiteId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hunters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Hunters_Sites_SiteId",
+                        column: x => x.SiteId,
+                        principalTable: "Sites",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserSites",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DbSiteId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSites", x => new { x.ApplicationUserId, x.DbSiteId });
+                    table.ForeignKey(
+                        name: "FK_UserSites_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserSites_Sites_DbSiteId",
+                        column: x => x.DbSiteId,
+                        principalTable: "Sites",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -204,12 +287,39 @@ namespace WinchHuntApp.Server.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "bec81c59-b51e-4ef0-9516-6950963880f5", 0, "0f84fd0f-0426-4eaa-a8bb-e41a21acfebe", "admin@winchhunt.net", true, false, null, "ADMIN@WINCHHUNT.NET", "ADMIN@WINCHHUNT.NET", "AQAAAAEAACcQAAAAEI1j/l/KxnRteg2iFZtzXUeDLkPyuYDrYN4FWlGINMdepuSjUcPtN42jEkTzPY36bg==", "", false, "ac50682c-c2a4-4e01-b954-23abd81224a7", false, "admin@winchhunt.net" });
+                values: new object[] { "bec81c59-b51e-4ef0-9516-6950963880f5", 0, "faf0202d-36ab-4361-80e7-f584553066c7", "admin@winchhunt.net", true, false, null, "ADMIN@WINCHHUNT.NET", "ADMIN@WINCHHUNT.NET", "AQAAAAEAACcQAAAAEMQrxPBm7BJ+yeIEm/pwPuK52raXYzZ1WAjum5jBJOEmHTvP7ViquWRtZPB/thJ56A==", "", false, "3b7456e3-6c0c-43c4-8862-e5491cb7fa9c", false, "admin@winchhunt.net" });
+
+            migrationBuilder.InsertData(
+                table: "Sites",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { "1c3180a1-f3f0-42e4-ac72-0310a701d537", "DemoSite" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { "3181998d-0b28-490d-9619-ca3f35d0cf83", "bec81c59-b51e-4ef0-9516-6950963880f5" });
+
+            migrationBuilder.InsertData(
+                table: "Foxes",
+                columns: new[] { "Id", "DeviceId", "LastAltitude", "LastGpsTimestamp", "LastLatitude", "LastLongitude", "LastSeen", "LastVelocity", "Name", "SiteId" },
+                values: new object[,]
+                {
+                    { "c3722555-1108-4186-8c47-a52f54ba2360", "112233", 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, "FakeFox1", "1c3180a1-f3f0-42e4-ac72-0310a701d537" },
+                    { "9618a3b6-587b-49da-b898-4a6eb62380db", "AABBCC", 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, "FakeFox2", "1c3180a1-f3f0-42e4-ac72-0310a701d537" },
+                    { "861d666b-0f3c-4a44-b1e5-982dc5dc8a18", "55EE66", 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, "FakeFox3", "1c3180a1-f3f0-42e4-ac72-0310a701d537" },
+                    { "a8fe26a8-ec1e-4b4f-8ccc-6bf122bb8092", "77FF88", 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, "FakeFox4", "1c3180a1-f3f0-42e4-ac72-0310a701d537" },
+                    { "1fb4aeca-dc23-4056-b26c-c6a9a19e5b4f", "112233", 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, 0.0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.0, "CalMarker", "1c3180a1-f3f0-42e4-ac72-0310a701d537" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Hunters",
+                columns: new[] { "Id", "AccessToken", "LastSeen", "Name", "SiteId" },
+                values: new object[] { "6f608305-8590-4c45-ac37-20127f1d1e3a", "0011DEMO2233", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "DemoHunter", "1c3180a1-f3f0-42e4-ac72-0310a701d537" });
+
+            migrationBuilder.InsertData(
+                table: "UserSites",
+                columns: new[] { "ApplicationUserId", "DbSiteId" },
+                values: new object[] { "bec81c59-b51e-4ef0-9516-6950963880f5", "1c3180a1-f3f0-42e4-ac72-0310a701d537" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -262,6 +372,16 @@ namespace WinchHuntApp.Server.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Foxes_SiteId",
+                table: "Foxes",
+                column: "SiteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hunters_SiteId",
+                table: "Hunters",
+                column: "SiteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
                 table: "PersistedGrants",
                 column: "Expiration");
@@ -275,6 +395,11 @@ namespace WinchHuntApp.Server.Migrations
                 name: "IX_PersistedGrants_SubjectId_SessionId_Type",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "SessionId", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSites_DbSiteId",
+                table: "UserSites",
+                column: "DbSiteId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -298,13 +423,25 @@ namespace WinchHuntApp.Server.Migrations
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
+                name: "Foxes");
+
+            migrationBuilder.DropTable(
+                name: "Hunters");
+
+            migrationBuilder.DropTable(
                 name: "PersistedGrants");
+
+            migrationBuilder.DropTable(
+                name: "UserSites");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Sites");
         }
     }
 }

@@ -25,7 +25,7 @@ namespace WinchHuntApp.Client.Components
                 await UserService.InviteNew(model);
                 NavigationManager.NavigateTo("users");
             }
-            catch (Exception ex)
+            catch
             {
                 loading = false;
                 StateHasChanged();

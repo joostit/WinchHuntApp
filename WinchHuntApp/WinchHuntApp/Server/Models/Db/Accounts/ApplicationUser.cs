@@ -8,5 +8,8 @@ namespace WinchHuntApp.Server.Models.Db.Accounts
 {
     public class ApplicationUser : IdentityUser
     {
+
+        public ICollection<ApplicationUserDbSite> Sites { get; set; }
+
     }
 }
