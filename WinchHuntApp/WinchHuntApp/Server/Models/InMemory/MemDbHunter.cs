@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Data.Db
+namespace WinchHuntApp.Server.Models.Inmemory
 {
-    public class DbHunter
+    public class MemDbHunter
     {
 
         /// <summary>

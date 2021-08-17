@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Data;
 using WinchHuntApp.Server.Models;
+using WinchHuntApp.Server.Models.Db.Accounts;
 using WinchHuntApp.Shared.Dto;
 using WinchHuntApp.Shared.Identity;
 

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Models;
 using WinchHuntApp.Server.Models.Db;
+using WinchHuntApp.Server.Models.Inmemory;
+using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Server.Services
 {
@@ -32,7 +34,7 @@ namespace WinchHuntApp.Server.Services
         public async Task ProcessUplinkPost(string uplinkAccessToken, UplinkPost postBody)
         {
 
-            DbSite targetSite = await accessService.GetUplinkSite(uplinkAccessToken);
+            MemDbSite targetSite = await accessService.GetUplinkSite(uplinkAccessToken);
 
             if (targetSite == null)
             {

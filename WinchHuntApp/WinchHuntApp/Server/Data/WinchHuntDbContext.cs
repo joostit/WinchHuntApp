@@ -6,8 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WinchHuntApp.Server.Data.Db;
-using WinchHuntApp.Server.Models;
+using WinchHuntApp.Server.Models.Db.Accounts;
 
 namespace WinchHuntApp.Server.Data
 {

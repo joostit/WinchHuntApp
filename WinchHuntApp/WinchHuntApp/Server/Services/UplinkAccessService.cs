@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Models.Db;
+using WinchHuntApp.Server.Models.Inmemory;
 
 namespace WinchHuntApp.Server.Services
 {
@@ -11,7 +12,7 @@ namespace WinchHuntApp.Server.Services
     {
 
         // Replace by real database implementation
-        private DbSite defaultSite = new DbSite();
+        private MemDbSite defaultSite = new MemDbSite();
 
 
         public UplinkAccessService(IConfiguration configuration)
@@ -20,7 +21,7 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-        public async Task<DbSite> GetUplinkSite(string uplinkAccessToken)
+        public async Task<MemDbSite> GetUplinkSite(string uplinkAccessToken)
         {
             // ToDo: Actually search the database for the actual site
 

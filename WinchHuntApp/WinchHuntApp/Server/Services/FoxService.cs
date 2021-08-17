@@ -6,9 +6,7 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Data;
-using WinchHuntApp.Server.Data.Db;
-using WinchHuntApp.Server.Models;
-using WinchHuntApp.Server.Models.Db;
+using WinchHuntApp.Server.Models.Inmemory;
 using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Server.Services
@@ -42,7 +40,7 @@ namespace WinchHuntApp.Server.Services
             return retVal;
         }
 
-        private WinchFox CreateFoxDto(DbFox fox)
+        private WinchFox CreateFoxDto(MemDbFox fox)
         {
             WinchFox dto = new WinchFox();
 
@@ -65,10 +63,10 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-        public async Task ProcessFoxUpdateAsync(DbSite site, UplinkPost post)
+        public async Task ProcessFoxUpdateAsync(MemDbSite site, UplinkPost post)
         {
 
-            List<DbFox> foxesToRemove = new List<DbFox>();
+            List<MemDbFox> foxesToRemove = new List<MemDbFox>();
 
             foreach (var existing in inMemoryDb.Foxes)
             {
@@ -89,11 +87,11 @@ namespace WinchHuntApp.Server.Services
 
             foreach (var update in post.Devices)
             {
-                DbFox existing = await inMemoryDb.Foxes.Where(f => f.DeviceId.Equals(update.Device.Id)).SingleOrDefaultAsync();
+                MemDbFox existing = await inMemoryDb.Foxes.Where(f => f.DeviceId.Equals(update.Device.Id)).SingleOrDefaultAsync();
 
                 if (existing == null)
                 {
-                    existing = new DbFox();
+                    existing = new MemDbFox();
                     inMemoryDb.Foxes.Add(existing);
                 }
 
@@ -103,7 +101,7 @@ namespace WinchHuntApp.Server.Services
             await inMemoryDb.SaveChangesAsync();
         }
 
-        private void UpdateExistingFox(DbFox existing, WinchFox update)
+        private void UpdateExistingFox(MemDbFox existing, WinchFox update)
         {
             existing.Latitude = update.Gps.Latitude;
             existing.Longitude = update.Gps.Longitude;

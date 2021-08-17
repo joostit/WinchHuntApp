@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WinchHuntApp.Server.Data.Db;
+using WinchHuntApp.Server.Models.Inmemory;
 
 namespace WinchHuntApp.Server.Data
 {
@@ -12,9 +12,9 @@ namespace WinchHuntApp.Server.Data
         public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options)
             : base(options) { }
 
-        public DbSet<DbFox> Foxes { get; set; }
+        public DbSet<MemDbFox> Foxes { get; set; }
 
-        public DbSet<DbHunter> Hunters { get; set; }
+        public DbSet<MemDbHunter> Hunters { get; set; }
 
     }
 }

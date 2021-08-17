@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WinchHuntApp.Server.Models;
 using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Server.Services;
-
+using WinchHuntApp.Shared.Dto;
 
 namespace WinchHuntApp.Server.Controllers.Api
 {

@@ -15,6 +15,7 @@ using WinchHuntApp.Server.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using WinchHuntApp.Server.Email;
 using Microsoft.AspNetCore.Identity;
+using WinchHuntApp.Server.Models.Db.Accounts;
 
 namespace WinchHuntApp.Server
 {
