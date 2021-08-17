@@ -8,7 +8,7 @@ using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Server.Models.Inmemory;
 using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Services
+namespace WinchHuntApp.Server.Services.Implementation
 {
     public class UplinkService : IUplinkService
     {

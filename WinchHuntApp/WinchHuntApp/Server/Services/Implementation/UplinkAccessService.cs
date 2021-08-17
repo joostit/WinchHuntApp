@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Server.Models.Inmemory;
 
-namespace WinchHuntApp.Server.Services
+namespace WinchHuntApp.Server.Services.Implementation
 {
     public class UplinkAccessService : IUplinkAccessService
     {

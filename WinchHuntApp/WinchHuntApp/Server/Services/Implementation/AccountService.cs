@@ -15,7 +15,7 @@ using WinchHuntApp.Server.Models.Db.Accounts;
 using WinchHuntApp.Shared.Dto;
 using WinchHuntApp.Shared.Identity;
 
-namespace WinchHuntApp.Server.Services
+namespace WinchHuntApp.Server.Services.Implementation
 {
     public class AccountService : IAccountService
     {

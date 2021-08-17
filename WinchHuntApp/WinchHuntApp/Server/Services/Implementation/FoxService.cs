@@ -9,7 +9,7 @@ using WinchHuntApp.Server.Data;
 using WinchHuntApp.Server.Models.Inmemory;
 using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Services
+namespace WinchHuntApp.Server.Services.Implementation
 {
     public class FoxService : IFoxService
     {
