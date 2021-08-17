@@ -116,7 +116,6 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-
         private async Task<IEnumerable<string>> GetUserRoles(string userId)
         {
             List<string> roles = new List<string>();
