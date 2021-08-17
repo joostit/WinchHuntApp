@@ -28,7 +28,7 @@ namespace WinchHuntApp.Server.Services.Implementation
         public async Task<HunterDto> GetHunter()
         {
             HunterDto result = new HunterDto();
-            MemDbHunter dbHunter = inMemoryDb.Hunters.FirstOrDefault();
+            MemDbHunter dbHunter = await inMemoryDb.Hunters.FirstOrDefaultAsync();
             
             if(dbHunter != null)
             {

@@ -24,15 +24,13 @@ namespace WinchHuntApp.Server.Services.Implementation
         public async Task<MemDbSite> GetUplinkSite(string uplinkAccessToken)
         {
             // ToDo: Actually search the database for the actual site
-
+            MemDbSite retVal = null;
             if (String.Equals(uplinkAccessToken, defaultSite.UplinkAccessToken))
             {
-                return defaultSite;
+                retVal = defaultSite;
             }
-            else
-            {
-                return null;
-            }
+
+            return await Task.FromResult(retVal);
         }
     }
 }
