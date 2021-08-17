@@ -39,7 +39,7 @@ namespace WinchHuntApp.Server.Services.Implementation
         }
 
 
-        public async Task SetHunter(MemDbSite site, WinchHunter hunter)
+        public async Task SetHunter(DbSite site, WinchHunter hunter)
         {
             MemDbHunter dbHunter;
 

@@ -16,17 +16,17 @@ namespace WinchHuntApp.Server.Services.Implementation
         ILogger<UplinkService> logger;
         IFoxService foxService;
         IHunterService hunterService;
-        IUplinkAccessService accessService;
+        ISiteService siteService;
 
         public UplinkService(ILogger<UplinkService> logger,
                              IFoxService foxService,
                              IHunterService hunterService,
-                             IUplinkAccessService accessService)
+                             ISiteService siteService)
         {
             this.logger = logger;
             this.foxService = foxService;
             this.hunterService = hunterService;
-            this.accessService = accessService;
+            this.siteService = siteService;
         }
 
 
@@ -34,7 +34,7 @@ namespace WinchHuntApp.Server.Services.Implementation
         public async Task ProcessUplinkPost(string uplinkAccessToken, UplinkPost postBody)
         {
 
-            MemDbSite targetSite = await accessService.GetUplinkSite(uplinkAccessToken);
+            DbSite targetSite = await siteService.GetSiteByHunterToken(uplinkAccessToken);
 
             if (targetSite == null)
             {
@@ -50,7 +50,6 @@ namespace WinchHuntApp.Server.Services.Implementation
             {
                 throw new InvalidOperationException("Devices collection not set");
             }
-
 
 
             try

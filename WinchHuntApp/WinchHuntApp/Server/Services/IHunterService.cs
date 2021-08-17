@@ -11,7 +11,7 @@ namespace WinchHuntApp.Server.Services
     public interface IHunterService
     {
 
-        Task SetHunter(MemDbSite site, WinchHunter hunter);
+        Task SetHunter(DbSite site, WinchHunter hunter);
 
         Task<HunterDto> GetHunter();
     }

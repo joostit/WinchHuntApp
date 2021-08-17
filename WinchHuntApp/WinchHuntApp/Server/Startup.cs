@@ -74,11 +74,10 @@ namespace WinchHuntApp.Server
             services.AddRazorPages();
 
             services.AddScoped<IFoxService, FoxService>();
-            services.AddScoped<IUplinkAccessService, UplinkAccessService>();
             services.AddScoped<IHunterService, HunterService>();
             services.AddScoped<IUplinkService, UplinkService>();
             services.AddScoped<IAccountService, AccountService>();
-
+            services.AddScoped<ISiteService, SiteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

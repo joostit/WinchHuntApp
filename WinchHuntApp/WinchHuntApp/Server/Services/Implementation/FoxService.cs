@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Data;
+using WinchHuntApp.Server.Models.Db;
 using WinchHuntApp.Server.Models.Inmemory;
 using WinchHuntApp.Shared.Dto;
 
@@ -63,7 +64,7 @@ namespace WinchHuntApp.Server.Services.Implementation
         }
 
 
-        public async Task ProcessFoxUpdateAsync(MemDbSite site, UplinkPost post)
+        public async Task ProcessFoxUpdateAsync(DbSite site, UplinkPost post)
         {
 
             List<MemDbFox> foxesToRemove = new List<MemDbFox>();
