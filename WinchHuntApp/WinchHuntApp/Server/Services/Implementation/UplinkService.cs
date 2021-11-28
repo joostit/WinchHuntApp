@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Models;
 using WinchHuntApp.Server.Models.Db;
+using WinchHuntApp.Server.Models.Inmemory;
+using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Services
+namespace WinchHuntApp.Server.Services.Implementation
 {
     public class UplinkService : IUplinkService
     {
@@ -14,17 +16,17 @@ namespace WinchHuntApp.Server.Services
         ILogger<UplinkService> logger;
         IFoxService foxService;
         IHunterService hunterService;
-        IUplinkAccessService accessService;
+        ISiteService siteService;
 
         public UplinkService(ILogger<UplinkService> logger,
                              IFoxService foxService,
                              IHunterService hunterService,
-                             IUplinkAccessService accessService)
+                             ISiteService siteService)
         {
             this.logger = logger;
             this.foxService = foxService;
             this.hunterService = hunterService;
-            this.accessService = accessService;
+            this.siteService = siteService;
         }
 
 
@@ -32,7 +34,7 @@ namespace WinchHuntApp.Server.Services
         public async Task ProcessUplinkPost(string uplinkAccessToken, UplinkPost postBody)
         {
 
-            DbSite targetSite = await accessService.GetUplinkSite(uplinkAccessToken);
+            DbSite targetSite = await siteService.GetSiteByHunterToken(uplinkAccessToken);
 
             if (targetSite == null)
             {
@@ -48,7 +50,6 @@ namespace WinchHuntApp.Server.Services
             {
                 throw new InvalidOperationException("Devices collection not set");
             }
-
 
 
             try

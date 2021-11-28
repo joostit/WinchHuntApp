@@ -2,49 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Data.Db
+namespace WinchHuntApp.Server.Models.Db
 {
     public class DbHunter
     {
+        public string Id { get; set; }
 
-        /// <summary>
-        /// Database key
-        /// </summary>
-        public int Id { get; set; }
-
-
-        /// <summary>
-        /// The device name
-        /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// The device ID
-        /// </summary>
-        public string DeviceId { get; set; }
+        public string AccessToken { get; set; }
 
-        /// <summary>
-        /// The device Hardware
-        /// </summary>
-        public string Hardware { get; set; }
+        public DateTime LastSeen { get; set; }
 
-        /// <summary>
-        /// The device Version
-        /// </summary>
-        public int Version { get; set; }
+        public string SiteId { get; set; }
 
-        /// <summary>
-        /// The type of device
-        /// </summary>
-        public DeviceTypes DeviceType { get; set; }
-
-        /// <summary>
-        /// Gets the time stamp of the last update that was received from the device
-        /// </summary>
-        public DateTime LastUpdate { get; set; }
-
-
+        public DbSite Site { get; set; }
     }
 }

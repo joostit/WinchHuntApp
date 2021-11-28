@@ -54,12 +54,6 @@ namespace WinchHuntApp.Client.Pages
         }
 
 
-        protected override async Task OnParametersSetAsync()
-        {
-
-        }
-
-
         private async Task StartFoxListener()
         {
             await Task.Run(() =>

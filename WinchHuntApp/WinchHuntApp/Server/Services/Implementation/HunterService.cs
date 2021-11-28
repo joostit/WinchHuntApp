@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Server.Data;
-using WinchHuntApp.Server.Data.Db;
 using WinchHuntApp.Server.Models.Db;
+using WinchHuntApp.Server.Models.Inmemory;
 using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Services
+namespace WinchHuntApp.Server.Services.Implementation
 {
     public class HunterService : IHunterService
     {
@@ -28,7 +28,7 @@ namespace WinchHuntApp.Server.Services
         public async Task<HunterDto> GetHunter()
         {
             HunterDto result = new HunterDto();
-            DbHunter dbHunter = inMemoryDb.Hunters.FirstOrDefault();
+            MemDbHunter dbHunter = await inMemoryDb.Hunters.FirstOrDefaultAsync();
             
             if(dbHunter != null)
             {
@@ -41,19 +41,19 @@ namespace WinchHuntApp.Server.Services
 
         public async Task SetHunter(DbSite site, WinchHunter hunter)
         {
-            DbHunter dbHunter;
+            MemDbHunter dbHunter;
 
             // Just a safeguard in case of inconsistencies. There can be only one ;)
             if (inMemoryDb.Hunters.Count() > 1)
             {
-                List<DbHunter> toRemove = inMemoryDb.Hunters.ToList();
+                List<MemDbHunter> toRemove = inMemoryDb.Hunters.ToList();
 
                 toRemove.ForEach(h => inMemoryDb.Hunters.Remove(h));
             }
 
             if (inMemoryDb.Hunters.Count() == 0)
             {
-                dbHunter = new DbHunter();
+                dbHunter = new MemDbHunter();
                 UpdateHunter(dbHunter, hunter);
                 inMemoryDb.Hunters.Add(dbHunter);
             }
@@ -67,7 +67,7 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-        private void UpdateHunter(DbHunter existing, WinchHunter update)
+        private void UpdateHunter(MemDbHunter existing, WinchHunter update)
         {
             existing.Name = update.Device.Name;
             existing.DeviceId = update.Device.Id;
@@ -78,7 +78,7 @@ namespace WinchHuntApp.Server.Services
         }
 
 
-        private WinchHunter CreateHunterDto(DbHunter fox)
+        private WinchHunter CreateHunterDto(MemDbHunter fox)
         {
             WinchHunter dto = new WinchHunter();
 

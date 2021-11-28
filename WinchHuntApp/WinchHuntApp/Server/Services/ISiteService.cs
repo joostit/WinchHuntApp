@@ -6,8 +6,10 @@ using WinchHuntApp.Server.Models.Db;
 
 namespace WinchHuntApp.Server.Services
 {
-    public interface IUplinkAccessService
+    public interface ISiteService
     {
-        Task<DbSite> GetUplinkSite(string apiToken);
+
+        public Task<DbSite> GetSiteByHunterToken(string hunterAccessToken);
+
     }
 }

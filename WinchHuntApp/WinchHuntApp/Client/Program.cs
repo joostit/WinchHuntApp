@@ -35,11 +35,10 @@ namespace WinchHuntApp.Client
             builder.Services.AddScoped<IMapService, MapService>();
             builder.Services.AddScoped<GeoLocationService>();
             builder.Services.AddScoped<FoxService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddApiAuthorization();
             
-
-
             var host = builder.Build();
 
             var mapService = host.Services.GetRequiredService<IMapService>();

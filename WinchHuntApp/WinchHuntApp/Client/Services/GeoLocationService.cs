@@ -49,13 +49,16 @@ namespace WinchHuntApp.Client.Services
             {
                 EnableHighAccuracy = true,
                 MaximumAge = 0,
-                Timeout = 0                
+                Timeout = 0
             };
 
             geopositionWatcher = await geolocationWrapper.WatchPosition(async (p) =>
             {
-                CurrentPosition = p;
-                GeoLocationStateHasChanged?.Invoke(this, EventArgs.Empty);
+                await Task.Run(() =>
+                {
+                    CurrentPosition = p;
+                    GeoLocationStateHasChanged?.Invoke(this, EventArgs.Empty);
+                });
             },
             options);
         }

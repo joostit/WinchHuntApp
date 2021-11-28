@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using WinchHuntApp.Server.Models;
+using WinchHuntApp.Server.Models.Db.Accounts;
 
 namespace WinchHuntApp.Server.Areas.Identity.Pages.Account.Manage
 {

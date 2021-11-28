@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WinchHuntApp.Shared.Dto;
 
-namespace WinchHuntApp.Server.Models
+namespace WinchHuntApp.Shared.Dto
 {
     public class UplinkPost
     {

@@ -1,0 +1,21 @@
+﻿@page "/manageusers"
+@using WinchHuntApp.Client.Components;
+@using WinchHuntApp.Client.Utils;
+
+<UserList />
+
+<button @onclick="e => IsModalOpened = true">Invite user</button>
+
+<Modal @bind-Open="IsModalOpened" Close="OnClose">
+    <NewUserForm/>
+</Modal>
+
+@code{
+    public bool IsModalOpened { get; set; }
+    public string SelectedButton { get; set; }
+
+    void OnClose(string value)
+    {
+        SelectedButton = value;
+    }
+}
